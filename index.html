@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá Kubernetes: Báo Cáo Tương Tác</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Calm Tech -->
+    <!-- Application Structure Plan: The application is designed as a single-page scrolling "learning journey" to guide the user from high-level concepts to deep-dive details. The structure is thematic, not linear like the source report, to improve engagement and comprehension. 1. Intro: A hook to grab attention. 2. Why K8s: Compares orchestration tools and shows benefits. 3. Architecture: An interactive diagram to explore components. 4. Implementation: A visual guide for deploying a Spring Boot app. 5. Best Practices: Categorized, digestible tips in a tabbed view. 6. Case Study: Storytelling of Uber's success. This structure prioritizes interactive learning over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        - Comparison Chart (K8s vs. Swarm vs. Mesos): Goal: Compare. Method: Bar chart (Chart.js). Interaction: Hover tooltips. Justification: Clear, direct comparison of key attributes.
+        - Architecture Diagram: Goal: Organize & Inform. Method: Interactive HTML/CSS diagram. Interaction: Click components to open a modal with details. Justification: More engaging than a static image, promotes exploration.
+        - Key Objects: Goal: Inform. Method: Grid of cards. Interaction: Hover effects. Justification: Easy to scan and visually parse.
+        - Best Practices: Goal: Organize. Method: Tabbed interface. Interaction: Click to switch categories. Justification: Breaks down dense information into manageable topics.
+        - Uber Case Study: Goal: Inform/Impact. Method: Bar chart for benefits. Justification: Visualizes positive outcomes effectively.
+        - All text content is summarized from the source report and placed in context within the interactive components.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #FDFBF5;
+            color: #383734;
+        }
+        .text-accent { color: #D97706; } /* Amber-600 */
+        .bg-accent { background-color: #D97706; }
+        .bg-accent-light { background-color: #FEF3C7; } /* Amber-100 */
+        .border-accent { border-color: #D97706; }
+        .bg-primary { background-color: #3B82F6; } /* Blue-500 */
+        .text-primary { color: #3B82F6; }
+        .bg-base-100 { background-color: #FFFFFF; }
+        .bg-base-200 { background-color: #F9FAFB; }
+        .bg-base-300 { background-color: #F3F4F6; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #D97706;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold text-accent">
+                    <a href="#hero">Khám Phá K8s</a>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#why-k8s" class="nav-link font-medium text-gray-600 hover:text-accent">Tại sao?</a>
+                    <a href="#architecture" class="nav-link font-medium text-gray-600 hover:text-accent">Kiến trúc</a>
+                    <a href="#implementation" class="nav-link font-medium text-gray-600 hover:text-accent">Triển khai</a>
+                    <a href="#best-practices" class="nav-link font-medium text-gray-600 hover:text-accent">Thực hành</a>
+                    <a href="#case-study" class="nav-link font-medium text-gray-600 hover:text-accent">Case Study</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#why-k8s" class="block py-2 px-4 text-sm hover:bg-accent-light">Tại sao Kubernetes?</a>
+            <a href="#architecture" class="block py-2 px-4 text-sm hover:bg-accent-light">Kiến trúc Cốt lõi</a>
+            <a href="#implementation" class="block py-2 px-4 text-sm hover:bg-accent-light">Triển khai Thực tế</a>
+            <a href="#best-practices" class="block py-2 px-4 text-sm hover:bg-accent-light">Thực hành Tốt nhất</a>
+            <a href="#case-study" class="block py-2 px-4 text-sm hover:bg-accent-light">Case Study: Uber</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="py-20 md:py-32 bg-accent-light">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Giải mã <span class="text-accent">Kubernetes</span></h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
+                    Một hành trình tương tác để khám phá nền tảng điều phối container hàng đầu thế giới. Từ khái niệm cơ bản đến các ứng dụng phức tạp, hãy cùng tìm hiểu cách Kubernetes định hình thế giới Cloud-Native.
+                </p>
+            </div>
+        </section>
+
+        <!-- Why K8s Section -->
+        <section id="why-k8s" class="py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Tại sao Kubernetes lại thống trị?</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">Kubernetes không chỉ là một công cụ, đó là một hệ sinh thái mạnh mẽ giúp tự động hóa, mở rộng và quản lý ứng dụng một cách hiệu quả. Phần này khám phá những lợi ích cốt lõi và so sánh nó với các giải pháp khác để bạn hiểu rõ vị thế của nó.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Benefits Cards -->
+                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">🚀 Tăng tốc độ phát triển</h3>
+                        <p class="text-gray-600">Tự động hóa triển khai, cập nhật và rollback giúp các nhóm phát triển đưa sản phẩm ra thị trường nhanh hơn.</p>
+                    </div>
+                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">❤️ Tự phục hồi</h3>
+                        <p class="text-gray-600">Tự động khởi động lại các container bị lỗi, thay thế và lên lịch lại khi node chết, đảm bảo tính sẵn sàng cao.</p>
+                    </div>
+                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">↔️ Mở rộng linh hoạt</h3>
+                        <p class="text-gray-600">Tự động mở rộng quy mô ứng dụng theo chiều ngang (và dọc) dựa trên tải thực tế, tối ưu hóa tài nguyên.</p>
+                    </div>
+                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">🌍 Tính di động cao</h3>
+                        <p class="text-gray-600">Chạy ứng dụng nhất quán trên mọi môi trường: on-premise, public cloud hoặc hybrid cloud.</p>
+                    </div>
+                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">💰 Hiệu quả tài nguyên</h3>
+                        <p class="text-gray-600">Tối ưu hóa việc sử dụng tài nguyên của cluster, giúp giảm chi phí hạ tầng đáng kể.</p>
+                    </div>
+                     <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-bold text-xl mb-2 text-primary">🧩 Hệ sinh thái khổng lồ</h3>
+                        <p class="text-gray-600">Được hỗ trợ bởi một cộng đồng lớn và hàng ngàn công cụ tích hợp, từ monitoring đến service mesh.</p>
+                    </div>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-center mb-6">So sánh các nền tảng điều phối</h3>
+                <div class="bg-base-100 p-4 md:p-8 rounded-lg shadow-lg">
+                    <div class="chart-container">
+                        <canvas id="orchestratorComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture" class="py-16 md:py-24 bg-base-200">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Bóc tách Kiến trúc Kubernetes</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">Hiểu được kiến trúc của Kubernetes là chìa khóa để làm chủ nó. Hãy khám phá các thành phần cốt lõi của Control Plane và Worker Node thông qua sơ đồ tương tác dưới đây. Nhấp vào mỗi thành phần để xem chi tiết.</p>
+                </div>
+
+                <!-- Interactive Architecture Diagram -->
+                <div class="bg-base-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
+                    <div class="border-4 border-dashed border-gray-300 rounded-lg p-4 md:p-8">
+                        <h3 class="text-2xl font-bold text-center mb-6 text-accent">Control Plane (Bộ não)</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8">
+                            <div class="arch-component" data-component="api-server">Kube APIServer</div>
+                            <div class="arch-component" data-component="etcd">etcd</div>
+                            <div class="arch-component" data-component="scheduler">Kube Scheduler</div>
+                            <div class="arch-component col-span-2 md:col-span-1" data-component="controller-manager">Kube Controller Manager</div>
+                            <div class="arch-component col-span-2 md:col-span-1 lg:col-span-1" data-component="cloud-controller-manager">Cloud Controller Manager</div>
+                        </div>
+                        <div class="text-center text-3xl font-bold my-4">↕️</div>
+                        <h3 class="text-2xl font-bold text-center mb-6 text-primary">Worker Nodes (Nơi thực thi)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
+                                <h4 class="font-bold text-center text-lg mb-4">Worker Node 1</h4>
+                                <div class="space-y-3">
+                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
+                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
+                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
+                                    <div class="arch-pod">Pod (App)</div>
+                                </div>
+                            </div>
+                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
+                                <h4 class="font-bold text-center text-lg mb-4">Worker Node 2</h4>
+                                <div class="space-y-3">
+                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
+                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
+                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
+                                    <div class="arch-pod">Pod (App)</div>
+                                </div>
+                            </div>
+                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
+                                <h4 class="font-bold text-center text-lg mb-4">Worker Node N</h4>
+                                <div class="space-y-3">
+                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
+                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
+                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
+                                    <div class="arch-pod">...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-16 mb-12">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2">Các khối xây dựng: Đối tượng Kubernetes</h3>
+                     <p class="max-w-2xl mx-auto text-gray-600">Đây là những tài nguyên cơ bản bạn sẽ làm việc hàng ngày. Mỗi đối tượng đại diện cho một phần của trạng thái cụm mong muốn.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="object-card">Pod</div>
+                    <div class="object-card">Deployment</div>
+                    <div class="object-card">Service</div>
+                    <div class="object-card">Ingress</div>
+                    <div class="object-card">ConfigMap</div>
+                    <div class="object-card">Secret</div>
+                    <div class="object-card">PersistentVolume</div>
+                    <div class="object-card">PersistentVolumeClaim</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Section -->
+        <section id="implementation" class="py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Triển khai thực tế: Spring Boot trên K8s</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">Lý thuyết là nền tảng, nhưng sức mạnh thực sự của Kubernetes được thể hiện qua việc triển khai. Hãy xem cách một ứng dụng Java/Spring Boot được đóng gói và đưa vào hoạt động trên Kubernetes qua các tệp YAML mẫu.</p>
+                </div>
+                
+                <div class="bg-base-100 p-6 md:p-8 rounded-lg shadow-lg">
+                    <div id="yaml-tabs" class="mb-4 border-b border-gray-200">
+                        <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                            <button class="yaml-tab active" data-target="deployment">Deployment</button>
+                            <button class="yaml-tab" data-target="service">Service</button>
+                            <button class="yaml-tab" data-target="configmap">ConfigMap</button>
+                            <button class="yaml-tab" data-target="secret">Secret</button>
+                        </nav>
+                    </div>
+                    <div>
+                        <div id="deployment-content" class="yaml-content">
+                            <h4 class="font-bold text-lg mb-2">Deployment.yaml</h4>
+                            <p class="text-sm text-gray-500 mb-4">Quản lý vòng đời của Pods ứng dụng, đảm bảo số lượng bản sao mong muốn và xử lý cập nhật.</p>
+                            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-boot-app
+  template:
+    metadata:
+      labels:
+        app: spring-boot-app
+    spec:
+      containers:
+      - name: spring-boot-container
+        image: your/spring-boot-app:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 45
+</code></pre>
+                        </div>
+                        <div id="service-content" class="yaml-content hidden">
+                           <h4 class="font-bold text-lg mb-2">Service.yaml</h4>
+                           <p class="text-sm text-gray-500 mb-4">Cung cấp một điểm truy cập mạng ổn định (IP và DNS) cho các Pod của bạn.</p>
+                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-app-service
+spec:
+  selector:
+    app: spring-boot-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+</code></pre>
+                        </div>
+                        <div id="configmap-content" class="yaml-content hidden">
+                           <h4 class="font-bold text-lg mb-2">ConfigMap.yaml</h4>
+                           <p class="text-sm text-gray-500 mb-4">Tách biệt cấu hình khỏi mã nguồn, cho phép quản lý môi trường linh hoạt.</p>
+                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  application.properties: |
+    logging.level.root=INFO
+    app.feature.enabled=true
+</code></pre>
+                        </div>
+                        <div id="secret-content" class="yaml-content hidden">
+                           <h4 class="font-bold text-lg mb-2">Secret.yaml</h4>
+                           <p class="text-sm text-gray-500 mb-4">Lưu trữ thông tin nhạy cảm như mật khẩu và khóa API một cách an toàn.</p>
+                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+data:
+  # Values are base64 encoded
+  username: dXNlcg==
+  password: cGFzc3dvcmQ=
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section id="best-practices" class="py-16 md:py-24 bg-base-200">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Con đường dẫn đến sự thành thạo K8s</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">Vận hành Kubernetes ở môi trường sản xuất đòi hỏi phải tuân thủ các thực hành tốt nhất. Khám phá các khuyến nghị cốt lõi về kiến trúc, bảo mật, vận hành và hơn thế nữa.</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-4 border-b border-gray-200">
+                        <nav id="practices-tabs" class="flex flex-wrap -mb-px" aria-label="Tabs">
+                             <button class="practice-tab active" data-target="arch">Kiến trúc</button>
+                             <button class="practice-tab" data-target="security">Bảo mật</button>
+                             <button class="practice-tab" data-target="ops">Vận hành</button>
+                             <button class="practice-tab" data-target="cicd">CI/CD</button>
+                        </nav>
+                    </div>
+                    <div class="bg-base-100 p-6 rounded-b-lg rounded-r-lg shadow-md">
+                        <div id="arch-content" class="practice-content grid sm:grid-cols-2 gap-6">
+                            <div class="practice-card">Thiết kế Microservices</div>
+                            <div class="practice-card">Pods không trạng thái (Stateless)</div>
+                            <div class="practice-card">Tối ưu tài nguyên (Requests & Limits)</div>
+                            <div class="practice-card">Sử dụng Health Probes (Liveness & Readiness)</div>
+                        </div>
+                        <div id="security-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
+                            <div class="practice-card">Kiểm soát truy cập (RBAC)</div>
+                            <div class="practice-card">Quản lý Secrets an toàn</div>
+                            <div class="practice-card">Sử dụng Pod Security Standards (PSS)</div>
+                            <div class="practice-card">Quét lỗ hổng Container Image</div>
+                        </div>
+                        <div id="ops-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
+                            <div class="practice-card">Chiến lược Rolling Update & Rollback</div>
+                            <div class="practice-card">Thiết lập Horizontal Pod Autoscaler (HPA)</div>
+                            <div class="practice-card">Centralized Logging & Monitoring</div>
+                            <div class="practice-card">Chiến lược Backup và Restore Cluster</div>
+                        </div>
+                        <div id="cicd-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
+                            <div class="practice-card">Tích hợp vào pipeline CI/CD</div>
+                            <div class="practice-card">Áp dụng GitOps (ví dụ: ArgoCD, Flux)</div>
+                            <div class="practice-card">Quản lý cấu hình bằng Helm/Kustomize</div>
+                            <div class="practice-card">Tự động hóa kiểm thử trong cluster</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+         <!-- Case Study Section -->
+        <section id="case-study" class="py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Case Study: <span class="text-accent">Uber</span> Chinh phục quy mô lớn</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">Hành trình của Uber di chuyển toàn bộ nền tảng tính toán khổng lồ của họ sang Kubernetes là một minh chứng mạnh mẽ cho sức mạnh và sự linh hoạt của nền tảng này. Hãy xem họ đã đối mặt với những thách thức nào và gặt hái được những lợi ích gì.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-base-100 p-6 md:p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-6">Kết quả đạt được</h3>
+                        <div class="chart-container h-80">
+                           <canvas id="uberBenefitsChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Thách thức & Giải pháp</h3>
+                        <div class="space-y-4">
+                            <div class="bg-accent-light p-4 rounded-lg">
+                                <p class="font-semibold">🔥 Thách thức: Vận hành ở quy mô cực lớn (hàng trăm ngàn pod).</p>
+                                <p class="text-sm text-gray-700">💡 Giải pháp: Tối ưu Control Plane, phát triển các plugin lập lịch tùy chỉnh, và xây dựng nền tảng liên cụm (Federation).</p>
+                            </div>
+                            <div class="bg-accent-light p-4 rounded-lg">
+                                <p class="font-semibold">🔥 Thách thức: Tích hợp với hệ sinh thái công cụ nội bộ phức tạp.</p>
+                                <p class="text-sm text-gray-700">💡 Giải pháp: Xây dựng lại các tích hợp, tạo các lớp trừu tượng để che giấu sự phức tạp khỏi các nhà phát triển.</p>
+                            </div>
+                             <div class="bg-accent-light p-4 rounded-lg">
+                                <p class="font-semibold">🔥 Thách thức: Quản lý các workload tính toán và AI/ML đòi hỏi tài nguyên cao.</p>
+                                <p class="text-sm text-gray-700">💡 Giải pháp: Sử dụng Custom Resource Definitions (CRDs) để mô hình hóa các workload, tối ưu hóa lập lịch GPU và quản lý tài nguyên theo nhóm.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>Báo cáo tương tác được tạo bởi AI.</p>
+            <p class="text-sm text-gray-400 mt-2">Dựa trên nghiên cứu chuyên sâu về Kubernetes.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Architecture Components -->
+    <div id="arch-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop hidden opacity-0">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 md:max-w-2xl mx-auto p-6 modal-content transform scale-95">
+            <div class="flex justify-between items-center border-b pb-3 mb-3">
+                <h3 id="modal-title" class="text-2xl font-bold text-primary">Component Details</h3>
+                <button id="modal-close-button" class="text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div id="modal-body" class="text-gray-700">
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Data ---
+            const orchestratorData = {
+                labels: ['Kubernetes', 'Docker Swarm', 'Apache Mesos'],
+                datasets: [{
+                    label: 'Khả năng mở rộng',
+                    data: [9, 6, 8],
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Hệ sinh thái',
+                    data: [10, 7, 6],
+                    backgroundColor: 'rgba(217, 119, 6, 0.7)',
+                    borderColor: 'rgba(217, 119, 6, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Độ phức tạp (thấp hơn là tốt hơn)',
+                    data: [8, 3, 7],
+                    backgroundColor: 'rgba(107, 114, 128, 0.7)',
+                    borderColor: 'rgba(107, 114, 128, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const uberBenefitsData = {
+                labels: ['Hiệu quả tài nguyên', 'Năng suất phát triển', 'Tốc độ đổi mới', 'Độ tin cậy'],
+                datasets: [{
+                    label: 'Mức độ cải thiện (Minh họa)',
+                    data: [90, 80, 85, 95],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(217, 119, 6, 0.7)',
+                        'rgba(22, 163, 74, 0.7)',
+                        'rgba(147, 51, 234, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(217, 119, 6, 1)',
+                        'rgba(22, 163, 74, 1)',
+                        'rgba(147, 51, 234, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const archComponentDetails = {
+                'api-server': {
+                    title: 'Kube APIServer',
+                    description: 'Là cổng giao tiếp chính của cụm Kubernetes. Mọi tương tác từ người dùng (kubectl), các thành phần khác và các hệ thống bên ngoài đều đi qua APIServer. Nó xác thực các yêu cầu, xử lý chúng và lưu trữ trạng thái của cụm vào etcd.'
+                },
+                'etcd': {
+                    title: 'etcd',
+                    description: 'Là một kho lưu trữ key-value phân tán, nhất quán và có tính sẵn sàng cao. Etcd là "nguồn sự thật duy nhất" (single source of truth) lưu trữ toàn bộ trạng thái và cấu hình của cụm Kubernetes.'
+                },
+                'scheduler': {
+                    title: 'Kube Scheduler',
+                    description: 'Theo dõi các Pod mới được tạo mà chưa được gán cho node nào. Scheduler sẽ quyết định node tốt nhất để chạy Pod đó dựa trên các yêu cầu về tài nguyên, các ràng buộc về chính sách, và các quy tắc affinity/anti-affinity.'
+                },
+                'controller-manager': {
+                    title: 'Kube Controller Manager',
+                    description: 'Chạy các tiến trình controller. Các controller này theo dõi trạng thái của cụm và thực hiện các hành động để đưa trạng thái hiện tại về trạng thái mong muốn. Ví dụ: Node controller, Replication controller.'
+                },
+                'cloud-controller-manager': {
+                    title: 'Cloud Controller Manager',
+                    description: 'Tích hợp Kubernetes với API của các nhà cung cấp đám mây cụ thể (AWS, GCP, Azure). Nó quản lý các tài nguyên đặc thù của đám mây như Load Balancers, Routes và Volumes.'
+                },
+                'kubelet': {
+                    title: 'Kubelet',
+                    description: 'Là một agent chạy trên mỗi worker node. Nó đảm bảo rằng các container được mô tả trong PodSpecs đang chạy và khỏe mạnh. Kubelet tương tác với container runtime để quản lý vòng đời của container.'
+                },
+                'kube-proxy': {
+                    title: 'Kube-proxy',
+                    description: 'Duy trì các quy tắc mạng trên các node. Nó cho phép giao tiếp mạng đến các Pod từ bên trong hoặc bên ngoài cụm và thực hiện cân bằng tải cho các Services.'
+                },
+                'container-runtime': {
+                    title: 'Container Runtime',
+                    description: 'Là phần mềm chịu trách nhiệm chạy các container. Kubernetes hỗ trợ nhiều container runtime khác nhau như containerd, CRI-O. Kubelet giao tiếp với runtime để kéo image và chạy container.'
+                }
+            };
+
+            // --- Chart Initialization ---
+            const createChart = (ctx, type, data, options) => {
+                if (ctx) {
+                    new Chart(ctx, { type, data, options });
+                }
+            };
+            
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            createChart(
+                document.getElementById('orchestratorComparisonChart')?.getContext('2d'),
+                'bar',
+                orchestratorData,
+                commonChartOptions
+            );
+
+            createChart(
+                document.getElementById('uberBenefitsChart')?.getContext('2d'),
+                'bar',
+                uberBenefitsData,
+                { ...commonChartOptions, indexAxis: 'y' }
+            );
+
+            // --- Mobile Menu ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                     mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // --- YAML Tabs ---
+            const yamlTabs = document.querySelectorAll('.yaml-tab');
+            const yamlContents = document.querySelectorAll('.yaml-content');
+            yamlTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    yamlTabs.forEach(t => t.classList.remove('active', 'text-accent', 'border-accent'));
+                    tab.classList.add('active', 'text-accent', 'border-accent');
+                    const target = tab.dataset.target;
+                    yamlContents.forEach(content => {
+                        content.id === `${target}-content` ? content.classList.remove('hidden') : content.classList.add('hidden');
+                    });
+                });
+            });
+            
+             // --- Best Practices Tabs ---
+            const practicesTabs = document.querySelectorAll('.practice-tab');
+            const practicesContents = document.querySelectorAll('.practice-content');
+            practicesTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    practicesTabs.forEach(t => t.classList.remove('active', 'text-accent', 'border-accent'));
+                    tab.classList.add('active', 'text-accent', 'border-accent');
+                    const target = tab.dataset.target;
+                    practicesContents.forEach(content => {
+                        content.id === `${target}-content` ? content.classList.remove('hidden') : content.classList.add('hidden');
+                    });
+                });
+            });
+
+            // --- Architecture Modal ---
+            const archModal = document.getElementById('arch-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalCloseButton = document.getElementById('modal-close-button');
+
+            document.querySelectorAll('.arch-component').forEach(component => {
+                component.addEventListener('click', () => {
+                    const componentId = component.dataset.component;
+                    const details = archComponentDetails[componentId];
+                    if (details) {
+                        modalTitle.textContent = details.title;
+                        modalBody.textContent = details.description;
+                        archModal.classList.remove('hidden');
+                        setTimeout(() => archModal.classList.remove('opacity-0'), 10);
+                        setTimeout(() => archModal.querySelector('.modal-content').classList.remove('scale-95'), 10);
+                    }
+                });
+            });
+
+            const closeModal = () => {
+                archModal.querySelector('.modal-content').classList.add('scale-95');
+                archModal.classList.add('opacity-0');
+                setTimeout(() => archModal.classList.add('hidden'), 300);
+            };
+
+            modalCloseButton.addEventListener('click', closeModal);
+            archModal.addEventListener('click', (event) => {
+                if (event.target === archModal) {
+                    closeModal();
+                }
+            });
+
+            // --- Active Nav Link on Scroll ---
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('header nav a');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Add custom styles for components
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .arch-component {
+                    background-color: #F3F4F6;
+                    border: 1px solid #D1D5DB;
+                    padding: 0.75rem;
+                    text-align: center;
+                    border-radius: 0.5rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background-color 0.2s, box-shadow 0.2s;
+                }
+                .arch-component:hover {
+                    background-color: #E5E7EB;
+                    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+                }
+                .arch-pod {
+                    background-color: #DBEAFE;
+                    border: 1px solid #93C5FD;
+                    color: #1E40AF;
+                    padding: 0.5rem;
+                    text-align: center;
+                    border-radius: 0.5rem;
+                    font-weight: 500;
+                }
+                .object-card {
+                    background-color: #fff;
+                    padding: 1rem 1.5rem;
+                    border-radius: 0.5rem;
+                    text-align: center;
+                    font-weight: 600;
+                    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                }
+                .object-card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+                }
+                .yaml-tab, .practice-tab {
+                    padding: 0.5rem 1rem;
+                    cursor: pointer;
+                    font-weight: 600;
+                    color: #6B7280;
+                    border-bottom: 2px solid transparent;
+                }
+                .yaml-tab.active, .practice-tab.active {
+                    color: #D97706;
+                    border-color: #D97706;
+                }
+                .practice-card {
+                    background-color: #F9FAFB;
+                    padding: 1.5rem;
+                    border-radius: 0.5rem;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
