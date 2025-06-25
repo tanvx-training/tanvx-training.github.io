@@ -1,547 +1,808 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khám Phá Kubernetes: Báo Cáo Tương Tác</title>
+    <title>Hướng dẫn Tương tác - Spring Professional Certification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Chosen Palette: Calm Tech -->
-    <!-- Application Structure Plan: The application is designed as a single-page scrolling "learning journey" to guide the user from high-level concepts to deep-dive details. The structure is thematic, not linear like the source report, to improve engagement and comprehension. 1. Intro: A hook to grab attention. 2. Why K8s: Compares orchestration tools and shows benefits. 3. Architecture: An interactive diagram to explore components. 4. Implementation: A visual guide for deploying a Spring Boot app. 5. Best Practices: Categorized, digestible tips in a tabbed view. 6. Case Study: Storytelling of Uber's success. This structure prioritizes interactive learning over passive reading. -->
+    <!-- Chosen Palette: "Warm Neutral Harmony" -->
+    <!-- Application Structure Plan: Ứng dụng được cấu trúc với một thanh điều hướng chính cố định bên trái liệt kê các lĩnh vực thi chính. Mỗi lĩnh vực có các tab điều hướng phụ ở trên cùng để chia nhỏ các chủ đề phức tạp. Cấu trúc này giúp người dùng dễ dàng điều hướng, tập trung vào từng khái niệm cụ thể và tránh quá tải thông tin so với việc đọc một tài liệu dài. Người dùng có thể chuyển đổi giữa các lĩnh vực lớn và các chủ đề chi tiết một cách linh hoạt. -->
     <!-- Visualization & Content Choices: 
-        - Comparison Chart (K8s vs. Swarm vs. Mesos): Goal: Compare. Method: Bar chart (Chart.js). Interaction: Hover tooltips. Justification: Clear, direct comparison of key attributes.
-        - Architecture Diagram: Goal: Organize & Inform. Method: Interactive HTML/CSS diagram. Interaction: Click components to open a modal with details. Justification: More engaging than a static image, promotes exploration.
-        - Key Objects: Goal: Inform. Method: Grid of cards. Interaction: Hover effects. Justification: Easy to scan and visually parse.
-        - Best Practices: Goal: Organize. Method: Tabbed interface. Interaction: Click to switch categories. Justification: Breaks down dense information into manageable topics.
-        - Uber Case Study: Goal: Inform/Impact. Method: Bar chart for benefits. Justification: Visualizes positive outcomes effectively.
-        - All text content is summarized from the source report and placed in context within the interactive components.
-    -->
+        1. So sánh các loại Dependency Injection: Mục tiêu -> So sánh. Phương pháp -> Biểu đồ cột ngang (Chart.js) để trực quan hóa các tiêu chí như Khả năng kiểm thử, Tính bất biến. Tương tác -> Hover để xem tooltip chi tiết. Lý do -> Biểu đồ giúp nhận diện ưu/nhược điểm nhanh hơn bảng văn bản.
+        2. Bean Scopes: Mục tiêu -> Tổ chức & Thông báo. Phương pháp -> Bố cục thẻ tương tác (HTML/CSS). Tương tác -> Nhấp vào thẻ để xem chi tiết, ví dụ và các lưu ý. Lý do -> Chia nhỏ thông tin dày đặc thành các phần hấp dẫn, dễ tiêu hóa.
+        3. Thứ tự thực thi Advice trong AOP: Mục tiêu -> Giải thích quy trình. Phương pháp -> Sơ đồ trực quan bằng HTML/CSS. Tương tác -> Hover vào các bước để xem mô tả chi tiết. Lý do -> Sơ đồ dòng chảy hiệu quả hơn văn bản thuần túy trong việc giải thích một chuỗi sự kiện.
+        4. Code Snippets: Mục tiêu -> Cung cấp thông tin. Phương pháp -> Khối mã được định dạng rõ ràng với nút sao chép. Tương tác -> Nút "Sao chép". Lý do -> Cải thiện tính dễ đọc và khả năng tái sử dụng.
+        Các lựa chọn này tuân thủ yêu cầu sử dụng Canvas cho biểu đồ và HTML/CSS cho các sơ đồ, không sử dụng SVG/Mermaid. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
     <style>
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background-color: #FDFBF5;
-            color: #383734;
+            background-color: #F5F5F4; /* stone-100 */
         }
-        .text-accent { color: #D97706; } /* Amber-600 */
-        .bg-accent { background-color: #D97706; }
-        .bg-accent-light { background-color: #FEF3C7; } /* Amber-100 */
-        .border-accent { border-color: #D97706; }
-        .bg-primary { background-color: #3B82F6; } /* Blue-500 */
-        .text-primary { color: #3B82F6; }
-        .bg-base-100 { background-color: #FFFFFF; }
-        .bg-base-200 { background-color: #F9FAFB; }
-        .bg-base-300 { background-color: #F3F4F6; }
-        .chart-container {
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E7E5E4; /* stone-200 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A8A29E; /* stone-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #78716C; /* stone-500 */
+        }
+        .main-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1C1917; /* stone-900 */
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #D6D3D1; /* stone-300 */
+        }
+        .main-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #292524; /* stone-800 */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .main-content p, .main-content li {
+            color: #44403C; /* stone-700 */
+            line-height: 1.75;
+        }
+        .main-content a {
+            color: #2563EB; /* blue-600 */
+            text-decoration: underline;
+        }
+        .main-content .code-block {
+            background-color: #1f2937; /* gray-800 */
+            color: #d1d5db; /* gray-300 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
             position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
+            overflow-x: auto;
         }
-        @media (max-width: 768px) {
-            .chart-container {
-                height: 300px;
-            }
-        }
-        .modal-backdrop {
-            transition: opacity 0.3s ease;
-        }
-        .modal-content {
-            transition: transform 0.3s ease;
-        }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-link::after {
-            content: '';
+        .main-content .copy-btn {
             position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #D97706;
-            transition: width 0.3s;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4b5563; /* gray-600 */
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
         }
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
+        .main-content .copy-btn:hover {
+            background-color: #6b7280; /* gray-500 */
+        }
+        .main-content .note {
+            background-color: #FEFCE8; /* yellow-50 */
+            border-left: 4px solid #FACC15; /* yellow-400 */
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0.25rem;
+        }
+         .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 700px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 350px; 
+            max-height: 40vh;
+        }
+        .main-nav-item.active {
+            background-color: #FFFFFF;
+            color: #1C1917;
+            font-weight: 600;
+        }
+        .sub-nav-item.active {
+            border-bottom-color: #3B82F6; /* blue-500 */
+            color: #3B82F6;
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="text-stone-800">
 
-    <!-- Header -->
-    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm transition-all duration-300">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="text-2xl font-bold text-accent">
-                    <a href="#hero">Khám Phá K8s</a>
-                </div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#why-k8s" class="nav-link font-medium text-gray-600 hover:text-accent">Tại sao?</a>
-                    <a href="#architecture" class="nav-link font-medium text-gray-600 hover:text-accent">Kiến trúc</a>
-                    <a href="#implementation" class="nav-link font-medium text-gray-600 hover:text-accent">Triển khai</a>
-                    <a href="#best-practices" class="nav-link font-medium text-gray-600 hover:text-accent">Thực hành</a>
-                    <a href="#case-study" class="nav-link font-medium text-gray-600 hover:text-accent">Case Study</a>
-                </nav>
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
+    <div class="flex h-screen bg-stone-100">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-64 bg-stone-200 p-4 flex-shrink-0 overflow-y-auto transition-transform transform -translate-x-full md:translate-x-0 md:relative">
+            <h1 class="text-2xl font-bold text-stone-900 mb-6 border-b border-stone-300 pb-4">Spring Cert Guide</h1>
+            <nav id="main-nav">
+                <!-- Main navigation links will be inserted here by JS -->
+            </nav>
+        </aside>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-20 p-2 bg-white rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <div id="content-container" class="max-w-7xl mx-auto">
+                <!-- Content will be inserted here by JS -->
             </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#why-k8s" class="block py-2 px-4 text-sm hover:bg-accent-light">Tại sao Kubernetes?</a>
-            <a href="#architecture" class="block py-2 px-4 text-sm hover:bg-accent-light">Kiến trúc Cốt lõi</a>
-            <a href="#implementation" class="block py-2 px-4 text-sm hover:bg-accent-light">Triển khai Thực tế</a>
-            <a href="#best-practices" class="block py-2 px-4 text-sm hover:bg-accent-light">Thực hành Tốt nhất</a>
-            <a href="#case-study" class="block py-2 px-4 text-sm hover:bg-accent-light">Case Study: Uber</a>
-        </div>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="py-20 md:py-32 bg-accent-light">
-            <div class="container mx-auto px-4 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">Giải mã <span class="text-accent">Kubernetes</span></h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
-                    Một hành trình tương tác để khám phá nền tảng điều phối container hàng đầu thế giới. Từ khái niệm cơ bản đến các ứng dụng phức tạp, hãy cùng tìm hiểu cách Kubernetes định hình thế giới Cloud-Native.
-                </p>
-            </div>
-        </section>
-
-        <!-- Why K8s Section -->
-        <section id="why-k8s" class="py-16 md:py-24">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Tại sao Kubernetes lại thống trị?</h2>
-                    <p class="max-w-2xl mx-auto text-gray-600">Kubernetes không chỉ là một công cụ, đó là một hệ sinh thái mạnh mẽ giúp tự động hóa, mở rộng và quản lý ứng dụng một cách hiệu quả. Phần này khám phá những lợi ích cốt lõi và so sánh nó với các giải pháp khác để bạn hiểu rõ vị thế của nó.</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    <!-- Benefits Cards -->
-                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">🚀 Tăng tốc độ phát triển</h3>
-                        <p class="text-gray-600">Tự động hóa triển khai, cập nhật và rollback giúp các nhóm phát triển đưa sản phẩm ra thị trường nhanh hơn.</p>
-                    </div>
-                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">❤️ Tự phục hồi</h3>
-                        <p class="text-gray-600">Tự động khởi động lại các container bị lỗi, thay thế và lên lịch lại khi node chết, đảm bảo tính sẵn sàng cao.</p>
-                    </div>
-                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">↔️ Mở rộng linh hoạt</h3>
-                        <p class="text-gray-600">Tự động mở rộng quy mô ứng dụng theo chiều ngang (và dọc) dựa trên tải thực tế, tối ưu hóa tài nguyên.</p>
-                    </div>
-                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">🌍 Tính di động cao</h3>
-                        <p class="text-gray-600">Chạy ứng dụng nhất quán trên mọi môi trường: on-premise, public cloud hoặc hybrid cloud.</p>
-                    </div>
-                    <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">💰 Hiệu quả tài nguyên</h3>
-                        <p class="text-gray-600">Tối ưu hóa việc sử dụng tài nguyên của cluster, giúp giảm chi phí hạ tầng đáng kể.</p>
-                    </div>
-                     <div class="bg-base-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                        <h3 class="font-bold text-xl mb-2 text-primary">🧩 Hệ sinh thái khổng lồ</h3>
-                        <p class="text-gray-600">Được hỗ trợ bởi một cộng đồng lớn và hàng ngàn công cụ tích hợp, từ monitoring đến service mesh.</p>
-                    </div>
-                </div>
-                
-                <h3 class="text-2xl font-bold text-center mb-6">So sánh các nền tảng điều phối</h3>
-                <div class="bg-base-100 p-4 md:p-8 rounded-lg shadow-lg">
-                    <div class="chart-container">
-                        <canvas id="orchestratorComparisonChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Architecture Section -->
-        <section id="architecture" class="py-16 md:py-24 bg-base-200">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Bóc tách Kiến trúc Kubernetes</h2>
-                    <p class="max-w-2xl mx-auto text-gray-600">Hiểu được kiến trúc của Kubernetes là chìa khóa để làm chủ nó. Hãy khám phá các thành phần cốt lõi của Control Plane và Worker Node thông qua sơ đồ tương tác dưới đây. Nhấp vào mỗi thành phần để xem chi tiết.</p>
-                </div>
-
-                <!-- Interactive Architecture Diagram -->
-                <div class="bg-base-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
-                    <div class="border-4 border-dashed border-gray-300 rounded-lg p-4 md:p-8">
-                        <h3 class="text-2xl font-bold text-center mb-6 text-accent">Control Plane (Bộ não)</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8">
-                            <div class="arch-component" data-component="api-server">Kube APIServer</div>
-                            <div class="arch-component" data-component="etcd">etcd</div>
-                            <div class="arch-component" data-component="scheduler">Kube Scheduler</div>
-                            <div class="arch-component col-span-2 md:col-span-1" data-component="controller-manager">Kube Controller Manager</div>
-                            <div class="arch-component col-span-2 md:col-span-1 lg:col-span-1" data-component="cloud-controller-manager">Cloud Controller Manager</div>
-                        </div>
-                        <div class="text-center text-3xl font-bold my-4">↕️</div>
-                        <h3 class="text-2xl font-bold text-center mb-6 text-primary">Worker Nodes (Nơi thực thi)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
-                                <h4 class="font-bold text-center text-lg mb-4">Worker Node 1</h4>
-                                <div class="space-y-3">
-                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
-                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
-                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
-                                    <div class="arch-pod">Pod (App)</div>
-                                </div>
-                            </div>
-                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
-                                <h4 class="font-bold text-center text-lg mb-4">Worker Node 2</h4>
-                                <div class="space-y-3">
-                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
-                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
-                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
-                                    <div class="arch-pod">Pod (App)</div>
-                                </div>
-                            </div>
-                            <div class="border-2 border-gray-300 rounded-lg p-4 bg-blue-50">
-                                <h4 class="font-bold text-center text-lg mb-4">Worker Node N</h4>
-                                <div class="space-y-3">
-                                    <div class="arch-component" data-component="kubelet">Kubelet</div>
-                                    <div class="arch-component" data-component="kube-proxy">Kube-proxy</div>
-                                    <div class="arch-component" data-component="container-runtime">Container Runtime</div>
-                                    <div class="arch-pod">...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center mt-16 mb-12">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-2">Các khối xây dựng: Đối tượng Kubernetes</h3>
-                     <p class="max-w-2xl mx-auto text-gray-600">Đây là những tài nguyên cơ bản bạn sẽ làm việc hàng ngày. Mỗi đối tượng đại diện cho một phần của trạng thái cụm mong muốn.</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <div class="object-card">Pod</div>
-                    <div class="object-card">Deployment</div>
-                    <div class="object-card">Service</div>
-                    <div class="object-card">Ingress</div>
-                    <div class="object-card">ConfigMap</div>
-                    <div class="object-card">Secret</div>
-                    <div class="object-card">PersistentVolume</div>
-                    <div class="object-card">PersistentVolumeClaim</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Implementation Section -->
-        <section id="implementation" class="py-16 md:py-24">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Triển khai thực tế: Spring Boot trên K8s</h2>
-                    <p class="max-w-2xl mx-auto text-gray-600">Lý thuyết là nền tảng, nhưng sức mạnh thực sự của Kubernetes được thể hiện qua việc triển khai. Hãy xem cách một ứng dụng Java/Spring Boot được đóng gói và đưa vào hoạt động trên Kubernetes qua các tệp YAML mẫu.</p>
-                </div>
-                
-                <div class="bg-base-100 p-6 md:p-8 rounded-lg shadow-lg">
-                    <div id="yaml-tabs" class="mb-4 border-b border-gray-200">
-                        <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
-                            <button class="yaml-tab active" data-target="deployment">Deployment</button>
-                            <button class="yaml-tab" data-target="service">Service</button>
-                            <button class="yaml-tab" data-target="configmap">ConfigMap</button>
-                            <button class="yaml-tab" data-target="secret">Secret</button>
-                        </nav>
-                    </div>
-                    <div>
-                        <div id="deployment-content" class="yaml-content">
-                            <h4 class="font-bold text-lg mb-2">Deployment.yaml</h4>
-                            <p class="text-sm text-gray-500 mb-4">Quản lý vòng đời của Pods ứng dụng, đảm bảo số lượng bản sao mong muốn và xử lý cập nhật.</p>
-                            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: spring-boot-app-deployment
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: spring-boot-app
-  template:
-    metadata:
-      labels:
-        app: spring-boot-app
-    spec:
-      containers:
-      - name: spring-boot-container
-        image: your/spring-boot-app:latest
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /actuator/health/liveness
-            port: 8080
-          initialDelaySeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /actuator/health/readiness
-            port: 8080
-          initialDelaySeconds: 45
-</code></pre>
-                        </div>
-                        <div id="service-content" class="yaml-content hidden">
-                           <h4 class="font-bold text-lg mb-2">Service.yaml</h4>
-                           <p class="text-sm text-gray-500 mb-4">Cung cấp một điểm truy cập mạng ổn định (IP và DNS) cho các Pod của bạn.</p>
-                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
-kind: Service
-metadata:
-  name: spring-boot-app-service
-spec:
-  selector:
-    app: spring-boot-app
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-  type: LoadBalancer
-</code></pre>
-                        </div>
-                        <div id="configmap-content" class="yaml-content hidden">
-                           <h4 class="font-bold text-lg mb-2">ConfigMap.yaml</h4>
-                           <p class="text-sm text-gray-500 mb-4">Tách biệt cấu hình khỏi mã nguồn, cho phép quản lý môi trường linh hoạt.</p>
-                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app-config
-data:
-  application.properties: |
-    logging.level.root=INFO
-    app.feature.enabled=true
-</code></pre>
-                        </div>
-                        <div id="secret-content" class="yaml-content hidden">
-                           <h4 class="font-bold text-lg mb-2">Secret.yaml</h4>
-                           <p class="text-sm text-gray-500 mb-4">Lưu trữ thông tin nhạy cảm như mật khẩu và khóa API một cách an toàn.</p>
-                           <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>apiVersion: v1
-kind: Secret
-metadata:
-  name: db-credentials
-type: Opaque
-data:
-  # Values are base64 encoded
-  username: dXNlcg==
-  password: cGFzc3dvcmQ=
-</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Best Practices Section -->
-        <section id="best-practices" class="py-16 md:py-24 bg-base-200">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Con đường dẫn đến sự thành thạo K8s</h2>
-                    <p class="max-w-2xl mx-auto text-gray-600">Vận hành Kubernetes ở môi trường sản xuất đòi hỏi phải tuân thủ các thực hành tốt nhất. Khám phá các khuyến nghị cốt lõi về kiến trúc, bảo mật, vận hành và hơn thế nữa.</p>
-                </div>
-                
-                <div class="max-w-4xl mx-auto">
-                    <div class="mb-4 border-b border-gray-200">
-                        <nav id="practices-tabs" class="flex flex-wrap -mb-px" aria-label="Tabs">
-                             <button class="practice-tab active" data-target="arch">Kiến trúc</button>
-                             <button class="practice-tab" data-target="security">Bảo mật</button>
-                             <button class="practice-tab" data-target="ops">Vận hành</button>
-                             <button class="practice-tab" data-target="cicd">CI/CD</button>
-                        </nav>
-                    </div>
-                    <div class="bg-base-100 p-6 rounded-b-lg rounded-r-lg shadow-md">
-                        <div id="arch-content" class="practice-content grid sm:grid-cols-2 gap-6">
-                            <div class="practice-card">Thiết kế Microservices</div>
-                            <div class="practice-card">Pods không trạng thái (Stateless)</div>
-                            <div class="practice-card">Tối ưu tài nguyên (Requests & Limits)</div>
-                            <div class="practice-card">Sử dụng Health Probes (Liveness & Readiness)</div>
-                        </div>
-                        <div id="security-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
-                            <div class="practice-card">Kiểm soát truy cập (RBAC)</div>
-                            <div class="practice-card">Quản lý Secrets an toàn</div>
-                            <div class="practice-card">Sử dụng Pod Security Standards (PSS)</div>
-                            <div class="practice-card">Quét lỗ hổng Container Image</div>
-                        </div>
-                        <div id="ops-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
-                            <div class="practice-card">Chiến lược Rolling Update & Rollback</div>
-                            <div class="practice-card">Thiết lập Horizontal Pod Autoscaler (HPA)</div>
-                            <div class="practice-card">Centralized Logging & Monitoring</div>
-                            <div class="practice-card">Chiến lược Backup và Restore Cluster</div>
-                        </div>
-                        <div id="cicd-content" class="practice-content hidden grid sm:grid-cols-2 gap-6">
-                            <div class="practice-card">Tích hợp vào pipeline CI/CD</div>
-                            <div class="practice-card">Áp dụng GitOps (ví dụ: ArgoCD, Flux)</div>
-                            <div class="practice-card">Quản lý cấu hình bằng Helm/Kustomize</div>
-                            <div class="practice-card">Tự động hóa kiểm thử trong cluster</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-         <!-- Case Study Section -->
-        <section id="case-study" class="py-16 md:py-24">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Case Study: <span class="text-accent">Uber</span> Chinh phục quy mô lớn</h2>
-                    <p class="max-w-3xl mx-auto text-gray-600">Hành trình của Uber di chuyển toàn bộ nền tảng tính toán khổng lồ của họ sang Kubernetes là một minh chứng mạnh mẽ cho sức mạnh và sự linh hoạt của nền tảng này. Hãy xem họ đã đối mặt với những thách thức nào và gặt hái được những lợi ích gì.</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="bg-base-100 p-6 md:p-8 rounded-lg shadow-lg">
-                        <h3 class="text-2xl font-bold text-center mb-6">Kết quả đạt được</h3>
-                        <div class="chart-container h-80">
-                           <canvas id="uberBenefitsChart"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-4">Thách thức & Giải pháp</h3>
-                        <div class="space-y-4">
-                            <div class="bg-accent-light p-4 rounded-lg">
-                                <p class="font-semibold">🔥 Thách thức: Vận hành ở quy mô cực lớn (hàng trăm ngàn pod).</p>
-                                <p class="text-sm text-gray-700">💡 Giải pháp: Tối ưu Control Plane, phát triển các plugin lập lịch tùy chỉnh, và xây dựng nền tảng liên cụm (Federation).</p>
-                            </div>
-                            <div class="bg-accent-light p-4 rounded-lg">
-                                <p class="font-semibold">🔥 Thách thức: Tích hợp với hệ sinh thái công cụ nội bộ phức tạp.</p>
-                                <p class="text-sm text-gray-700">💡 Giải pháp: Xây dựng lại các tích hợp, tạo các lớp trừu tượng để che giấu sự phức tạp khỏi các nhà phát triển.</p>
-                            </div>
-                             <div class="bg-accent-light p-4 rounded-lg">
-                                <p class="font-semibold">🔥 Thách thức: Quản lý các workload tính toán và AI/ML đòi hỏi tài nguyên cao.</p>
-                                <p class="text-sm text-gray-700">💡 Giải pháp: Sử dụng Custom Resource Definitions (CRDs) để mô hình hóa các workload, tối ưu hóa lập lịch GPU và quản lý tài nguyên theo nhóm.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p>Báo cáo tương tác được tạo bởi AI.</p>
-            <p class="text-sm text-gray-400 mt-2">Dựa trên nghiên cứu chuyên sâu về Kubernetes.</p>
-        </div>
-    </footer>
-
-    <!-- Modal for Architecture Components -->
-    <div id="arch-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop hidden opacity-0">
-        <div class="bg-white rounded-lg shadow-xl w-11/12 md:max-w-2xl mx-auto p-6 modal-content transform scale-95">
-            <div class="flex justify-between items-center border-b pb-3 mb-3">
-                <h3 id="modal-title" class="text-2xl font-bold text-primary">Component Details</h3>
-                <button id="modal-close-button" class="text-gray-500 hover:text-gray-800">&times;</button>
-            </div>
-            <div id="modal-body" class="text-gray-700">
-                <p>Loading...</p>
-            </div>
-        </div>
+        </main>
     </div>
 
+<script>
+const contentData = {
+    'intro': {
+        title: 'Chào mừng đến với Hướng dẫn Tương tác Spring Certification',
+        content: `
+            <h2>Bắt đầu hành trình chinh phục Spring</h2>
+            <p class="mt-4 text-lg">Chứng chỉ Spring Professional xác nhận sự hiểu biết sâu sắc về các khái niệm cốt lõi của Spring Framework và khả năng áp dụng chúng vào phát triển ứng dụng thực tế. Hướng dẫn này được thiết kế để cung cấp một trải nghiệm học tập tương tác, giúp bạn nắm vững kiến thức một cách có hệ thống và hiệu quả.</p>
+            <p class="mt-4">Hãy bắt đầu bằng cách chọn một lĩnh vực từ thanh điều hướng bên trái. Mỗi lĩnh vực bao gồm các chủ đề chi tiết, được trình bày dưới dạng các tab để bạn dễ dàng theo dõi. Các khái niệm phức tạp sẽ được minh họa bằng sơ đồ và biểu đồ tương tác để giúp bạn hiểu sâu hơn.</p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-blue-600">Học tập có cấu trúc</h3>
+                    <p>Nội dung được chia thành các lĩnh vực chính của kỳ thi, giúp bạn tập trung vào từng phần một.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-green-600">Trực quan hóa</h3>
+                    <p>Các biểu đồ và sơ đồ tương tác giúp làm sáng tỏ các khái niệm trừu tượng và các mối quan hệ phức tạp.</p>
+                </div>
+            </div>
+        `
+    },
+    'container': {
+        title: 'I. Container, Dependency, và IoC',
+        subtopics: {
+            'ioc': {
+                title: 'IoC Container',
+                content: `
+                    <h3>Giới thiệu về Spring IoC Container</h3>
+                    <p>Spring IoC (Inversion of Control) container là trái tim của Spring Framework, chịu trách nhiệm quản lý vòng đời và các dependency của Spring bean. Container tự động khởi tạo, cấu hình và lắp ráp các bean dựa trên cấu hình được cung cấp.</p>
+                    <p class="mt-2">Sự thay đổi cơ bản mà IoC mang lại là việc đảo ngược quyền kiểm soát từ nhà phát triển sang framework. Thay vì mã của bạn tạo và quản lý đối tượng, container sẽ làm điều đó, giúp giảm sự phụ thuộc, tăng khả năng kiểm thử và cải thiện khả năng bảo trì.</p>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Các loại Container</h4>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>BeanFactory:</strong> Container đơn giản nhất, cung cấp các tính năng cơ bản của Dependency Injection. Nó nhẹ và thường khởi tạo bean một cách "lười biếng" (lazy initialization) khi được yêu cầu.</li>
+                        <li><strong>ApplicationContext:</strong> Một container nâng cao hơn, xây dựng trên BeanFactory. Nó bổ sung nhiều chức năng cấp doanh nghiệp như tích hợp AOP, xử lý sự kiện, và quốc tế hóa. Các bean thường được tạo ngay khi khởi động (eager initialization). Trong hầu hết các ứng dụng, ApplicationContext là lựa chọn ưu tiên.</li>
+                    </ul>
+                `
+            },
+            'bean-def': {
+                title: 'Định nghĩa Bean',
+                content: `
+                    <h3>Định nghĩa Bean: XML, Annotation, và Java Config</h3>
+                    <p>Spring cung cấp ba cách chính để định nghĩa các bean và cấu hình chúng:</p>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // --- Data ---
-            const orchestratorData = {
-                labels: ['Kubernetes', 'Docker Swarm', 'Apache Mesos'],
+                    <h4 class="text-xl font-semibold mt-6 mb-2">1. Cấu hình XML</h4>
+                    <p>Phương pháp truyền thống, định nghĩa bean trong các tệp XML. Mặc dù ít phổ biến hơn hiện nay, nó vẫn hữu ích cho các dự án lớn hoặc hệ thống cũ nơi việc quản lý tập trung là cần thiết.</p>
+                    <div class="code-block">
+                        <pre><code>&lt;bean id="myBean" class="com.example.MyBean"&gt;
+    &lt;property name="name" value="Example Bean"/&gt;
+&lt;/bean&gt;</code></pre>
+                    </div>
+
+                    <h4 class="text-xl font-semibold mt-6 mb-2">2. Cấu hình bằng Annotation</h4>
+                    <p>Cách tiếp cận hiện đại và phổ biến nhất. Các lớp được đánh dấu bằng các annotation stereotype để Spring tự động phát hiện và đăng ký chúng làm bean.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><code>@Component</code>: Annotation chung cho bất kỳ bean nào được quản lý bởi Spring.</li>
+                        <li><code>@Service</code>: Dành cho lớp tầng dịch vụ (business logic).</li>
+                        <li><code>@Repository</code>: Dành cho lớp tầng truy cập dữ liệu (DAO), cung cấp tính năng dịch ngoại lệ.</li>
+                        <li><code>@Controller</code>: Dành cho các controller trong Spring MVC.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre><code>@Component("myBean")
+public class MyBean {
+    @Value("Example Bean")
+    private String name;
+}</code></pre>
+                    </div>
+                    <p>Để kích hoạt quét annotation, bạn cần sử dụng <code>@ComponentScan</code> trong lớp cấu hình của mình.</p>
+
+                    <h4 class="text-xl font-semibold mt-6 mb-2">3. Cấu hình Java (Java Configuration)</h4>
+                    <p>Sử dụng các lớp Java thuần túy để định nghĩa bean. Đây là một cách tiếp cận an toàn về kiểu và linh hoạt.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><code>@Configuration</code>: Đánh dấu một lớp là nguồn định nghĩa bean.</li>
+                        <li><code>@Bean</code>: Đánh dấu một phương thức trong lớp <code>@Configuration</code> là phương thức nhà máy (factory method) để tạo ra một bean.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre><code>@Configuration
+public class AppConfig {
+    @Bean
+    public MyBean myBean() {
+        MyBean bean = new MyBean();
+        bean.setName("Example Bean");
+        return bean;
+    }
+}</code></pre>
+                    </div>
+                `
+            },
+            'bean-scope': {
+                title: 'Phạm vi Bean',
+                content: `
+                    <h3>Phạm vi Bean (Bean Scopes)</h3>
+                    <p>Phạm vi của bean xác định vòng đời và khả năng hiển thị của một instance bean. Việc chọn đúng phạm vi là rất quan trọng để quản lý trạng thái và tài nguyên hiệu quả. Nhấp vào từng thẻ để tìm hiểu chi tiết.</p>
+                    <div id="bean-scopes-container" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Bean scope cards will be inserted here by JS -->
+                    </div>
+                    <div id="bean-scope-details" class="mt-6 bg-white p-6 rounded-lg shadow-sm hidden">
+                        <!-- Details will be shown here -->
+                    </div>
+                     <div class="note">
+                        <p><strong>Thách thức phổ biến:</strong> Khi một bean có phạm vi tồn tại lâu hơn (ví dụ: <code>singleton</code>) phụ thuộc vào một bean có phạm vi ngắn hơn (ví dụ: <code>request</code>), Spring sẽ inject một proxy AOP thay vì đối tượng thực. Proxy này sẽ lấy instance bean thực sự từ phạm vi tương ứng (ví dụ: yêu cầu HTTP hiện tại) mỗi khi một phương thức được gọi.</p>
+                    </div>
+                `
+            },
+            'lifecycle': {
+                title: 'Vòng đời Bean',
+                content: `
+                    <h3>Vòng đời Bean: Callback và Thứ tự thực thi</h3>
+                    <p>Vòng đời của Spring bean định nghĩa một chuỗi các giai đoạn mà một bean trải qua từ khi được tạo cho đến khi bị hủy. Việc hiểu rõ vòng đời này giúp quản lý tài nguyên (như kết nối cơ sở dữ liệu) một cách chính xác.</p>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Các giai đoạn chính</h4>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li><strong>Instantiation:</strong> Container tạo một instance của lớp bean.</li>
+                        <li><strong>Populate Properties:</strong> Container inject các dependency (DI).</li>
+                        <li><strong>Initialization:</strong> Các callback khởi tạo được gọi. Đây là nơi để thực hiện logic thiết lập tùy chỉnh.</li>
+                        <li><strong>In Use:</strong> Bean sẵn sàng để sử dụng.</li>
+                        <li><strong>Destruction:</strong> Khi container đóng, các callback hủy được gọi để giải phóng tài nguyên.</li>
+                    </ol>
+
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Thứ tự thực thi Callback</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-semibold">Khởi tạo (Initialization)</h5>
+                            <ol class="list-decimal list-inside space-y-1 mt-2">
+                                <li>Phương thức được chú thích bằng <code>@PostConstruct</code> (tiêu chuẩn JSR-250, được khuyến nghị).</li>
+                                <li>Phương thức <code>afterPropertiesSet()</code> từ interface <code>InitializingBean</code>.</li>
+                                <li>Phương thức <code>init-method</code> tùy chỉnh được định nghĩa trong XML hoặc <code>@Bean</code>.</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold">Hủy (Destruction)</h5>
+                            <ol class="list-decimal list-inside space-y-1 mt-2">
+                                <li>Phương thức được chú thích bằng <code>@PreDestroy</code> (tiêu chuẩn JSR-250, được khuyến nghị).</li>
+                                <li>Phương thức <code>destroy()</code> từ interface <code>DisposableBean</code>.</li>
+                                <li>Phương thức <code>destroy-method</code> tùy chỉnh.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="note">
+                        <p><strong>Khuyến nghị:</strong> Nên ưu tiên sử dụng các annotation <code>@PostConstruct</code> và <code>@PreDestroy</code> vì chúng là một phần của tiêu chuẩn Java và không ràng buộc mã của bạn với các interface cụ thể của Spring.</p>
+                    </div>
+                `
+            },
+            'di': {
+                title: 'Dependency Injection',
+                content: `
+                    <h3>Dependency Injection (DI)</h3>
+                    <p>Dependency Injection (DI) là một mẫu thiết kế nơi các dependency của một đối tượng được "tiêm" vào nó bởi một thực thể bên ngoài (container), thay vì đối tượng tự tạo ra chúng. Spring hỗ trợ ba loại DI chính.</p>
+                    
+                    <h4 class="text-xl font-semibold mt-6 mb-2">So sánh các loại Dependency Injection</h4>
+                    <p>Biểu đồ dưới đây so sánh ba loại DI dựa trên các tiêu chí quan trọng. Constructor Injection thường là lựa chọn tốt nhất cho các dependency bắt buộc.</p>
+                    <div class="chart-container my-6">
+                        <canvas id="diComparisonChart"></canvas>
+                    </div>
+
+                    <div id="di-details-container" class="space-y-6">
+                        <div>
+                            <h5 class="font-semibold text-lg">1. Constructor Injection (Được khuyến nghị)</h5>
+                            <p>Các dependency được cung cấp thông qua hàm tạo của lớp. Điều này đảm bảo đối tượng luôn được tạo ở trạng thái hợp lệ với tất cả các dependency cần thiết và cho phép các trường dependency là <code>final</code>, thúc đẩy tính bất biến.</p>
+                             <div class="code-block">
+                                <pre><code>@Component
+public class MyService {
+    private final MyRepository repository;
+
+    @Autowired // Tùy chọn nếu chỉ có một constructor
+    public MyService(MyRepository repository) {
+        this.repository = repository;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-lg">2. Setter Injection</h5>
+                            <p>Các dependency được cung cấp thông qua các phương thức setter. Hữu ích cho các dependency tùy chọn có thể được thay đổi sau khi đối tượng được tạo.</p>
+                             <div class="code-block">
+                                <pre><code>@Component
+public class MyService {
+    private MyRepository repository;
+
+    @Autowired
+    public void setRepository(MyRepository repository) {
+        this.repository = repository;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-lg">3. Field Injection (Không khuyến khích)</h5>
+                            <p>Các dependency được tiêm trực tiếp vào các trường. Mặc dù ngắn gọn, nó làm cho việc kiểm thử đơn vị trở nên khó khăn hơn (vì cần reflection để đặt các mock) và che giấu các dependency của lớp.</p>
+                             <div class="code-block">
+                                <pre><code>@Component
+public class MyService {
+    @Autowired
+    private MyRepository repository;
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="mt-8">Giải quyết xung đột Dependency</h3>
+                    <p>Khi có nhiều bean cùng loại, Spring cần sự trợ giúp để biết nên inject bean nào. Có hai cách chính để giải quyết sự mơ hồ này:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><code>@Qualifier("beanName")</code>: Chỉ định rõ ràng tên của bean cần inject. Được sử dụng cùng với <code>@Autowired</code>.</li>
+                        <li><code>@Primary</code>: Đánh dấu một bean là lựa chọn ưu tiên khi có nhiều ứng viên. Nếu một bean được đánh dấu <code>@Primary</code>, nó sẽ được chọn theo mặc định.</li>
+                    </ul>
+                `
+            },
+            'bpp': {
+                title: 'Bean Post Processors',
+                content: `
+                    <h3>Bean Post Processors</h3>
+                    <p><code>BeanPostProcessor</code> là một interface đặc biệt cho phép bạn cắm logic tùy chỉnh vào quá trình khởi tạo bean của Spring. Nó cung cấp các hook để xử lý các instance bean trước và sau khi các phương thức khởi tạo của chúng được gọi.</p>
+                    <p class="mt-2">Đây là một cơ chế mở rộng cực kỳ mạnh mẽ. Nhiều tính năng của Spring, chẳng hạn như AOP (tạo proxy), quản lý giao dịch (<code>@Transactional</code>), và bảo mật, được triển khai nội bộ bằng cách sử dụng <code>BeanPostProcessor</code>.</p>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Các phương thức chính</h4>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><code>postProcessBeforeInitialization(Object bean, String beanName)</code>: Được gọi <strong>trước</strong> khi bất kỳ callback khởi tạo nào (như <code>@PostConstruct</code> hoặc <code>init-method</code>) được thực thi.</li>
+                        <li><code>postProcessAfterInitialization(Object bean, String beanName)</code>: Được gọi <strong>sau</strong> khi tất cả các callback khởi tạo đã hoàn tất.</li>
+                    </ul>
+                     <div class="note">
+                        <p>Một <code>BeanPostProcessor</code> hoạt động trên tất cả các bean trong container. Nó được thiết kế để áp dụng logic cắt ngang (cross-cutting) cho một tập hợp các bean, khác với các callback vòng đời (như <code>@PostConstruct</code>) chỉ áp dụng cho một bean duy nhất.</p>
+                    </div>
+                `
+            }
+        }
+    },
+    'aop': {
+        title: 'II. Aspect-Oriented Programming (AOP)',
+        subtopics: {
+            'concepts': {
+                title: 'Khái niệm AOP',
+                content: `
+                    <h3>Các khái niệm cốt lõi của AOP</h3>
+                    <p>Lập trình hướng khía cạnh (AOP) cho phép bạn mô-đun hóa các mối quan tâm cắt ngang (cross-cutting concerns) — các chức năng ảnh hưởng đến nhiều phần của ứng dụng, chẳng hạn như ghi nhật ký (logging), bảo mật, và quản lý giao dịch. AOP giúp tách biệt các chức năng này khỏi logic nghiệp vụ cốt lõi.</p>
+                    <div class="mt-6 space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">Aspect</h4>
+                            <p>Một module chứa code cho một mối quan tâm cắt ngang. Trong Spring, một aspect là một lớp được chú thích bằng <code>@Aspect</code>.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">Join Point</h4>
+                            <p>Một điểm cụ thể trong quá trình thực thi của chương trình. Trong Spring AOP, một join point luôn là việc thực thi một phương thức.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">Advice</h4>
+                            <p>Hành động được thực hiện bởi một aspect tại một join point. Ví dụ, ghi lại một thông điệp log trước khi một phương thức được thực thi.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">Pointcut</h4>
+                            <p>Một biểu thức xác định (khớp với) các join point nơi advice nên được áp dụng. Nó giống như một truy vấn để chọn các phương thức cụ thể.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">Target Object</h4>
+                            <p>Đối tượng bean đang được tư vấn (advised) bởi một hoặc nhiều aspect. Còn được gọi là "advised object".</p>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-lg">AOP Proxy</h4>
+                            <p>Spring tạo một đối tượng proxy để bao bọc đối tượng target. Proxy này được sử dụng để thực thi các advice. Spring AOP sử dụng proxy động JDK (nếu target object triển khai interface) hoặc proxy CGLIB (nếu không).</p>
+                        </div>
+                    </div>
+                `
+            },
+            'advice-types': {
+                title: 'Các loại Advice',
+                content: `
+                    <h3>Các loại Advice và Thứ tự thực thi</h3>
+                    <p>Spring AOP cung cấp năm loại advice chính. Hiểu rõ thời điểm mỗi loại được thực thi là rất quan trọng.</p>
+                    <div id="aop-advice-diagram" class="my-8 p-6 bg-white rounded-lg shadow-lg text-center">
+                        <div class="font-bold text-xl mb-4">Luồng thực thi Advice</div>
+                        <div class="relative flex flex-col items-center space-y-2">
+                            <div data-advice="around-before" class="aop-advice-step p-3 bg-purple-100 border-2 border-purple-400 rounded-full w-full max-w-md cursor-pointer transition-all duration-300">@Around (trước)</div>
+                            <div data-advice="before" class="aop-advice-step p-3 bg-blue-100 border-2 border-blue-400 rounded-full w-full max-w-sm cursor-pointer transition-all duration-300">@Before</div>
+                            <div class="p-4 bg-green-200 border-2 border-green-500 rounded-lg w-full max-w-xs font-bold">Thực thi phương thức mục tiêu</div>
+                            <div data-advice="after-returning" class="aop-advice-step p-3 bg-green-100 border-2 border-green-400 rounded-full w-full max-w-sm cursor-pointer transition-all duration-300">@AfterReturning (nếu thành công)</div>
+                            <div data-advice="after-throwing" class="aop-advice-step p-3 bg-red-100 border-2 border-red-400 rounded-full w-full max-w-sm cursor-pointer transition-all duration-300">@AfterThrowing (nếu có lỗi)</div>
+                             <div data-advice="after" class="aop-advice-step p-3 bg-yellow-100 border-2 border-yellow-400 rounded-full w-full max-w-sm cursor-pointer transition-all duration-300">@After (luôn luôn)</div>
+                            <div data-advice="around-after" class="aop-advice-step p-3 bg-purple-100 border-2 border-purple-400 rounded-full w-full max-w-md cursor-pointer transition-all duration-300">@Around (sau)</div>
+                        </div>
+                    </div>
+                    <div id="aop-advice-details" class="p-4 bg-gray-50 rounded-md border min-h-[50px]">
+                        <p class="text-gray-500">Hover vào một bước trong sơ đồ để xem mô tả.</p>
+                    </div>
+                `
+            },
+             'pointcuts': {
+                title: 'Biểu thức Pointcut',
+                content: `
+                    <h3>Biểu thức Pointcut</h3>
+                    <p>Biểu thức Pointcut sử dụng ngôn ngữ của AspectJ để chọn các join point. Chúng là chìa khóa để áp dụng advice một cách chính xác.</p>
+                     <h4 class="text-xl font-semibold mt-6 mb-2">Các Designator phổ biến</h4>
+                     <ul class="list-disc list-inside space-y-4">
+                        <li>
+                            <strong><code>execution</code>:</strong> Phổ biến nhất, khớp với việc thực thi phương thức.
+                            <div class="code-block"><pre><code>execution(public * com.example.service.*.*(..))</code></pre></div>
+                            <p class="text-sm text-stone-500 -mt-2 ml-4">Khớp với bất kỳ phương thức public nào trong bất kỳ lớp nào của gói <code>com.example.service</code>.</p>
+                        </li>
+                        <li>
+                            <strong><code>within</code>:</strong> Giới hạn khớp với các join point trong các kiểu (lớp hoặc interface) nhất định.
+                             <div class="code-block"><pre><code>within(com.example.service..*)</code></pre></div>
+                             <p class="text-sm text-stone-500 -mt-2 ml-4">Khớp với tất cả các phương thức trong gói <code>com.example.service</code> và các gói con của nó.</p>
+                        </li>
+                         <li>
+                            <strong><code>@annotation</code>:</strong> Khớp với các join point nơi phương thức thực thi có một annotation nhất định.
+                            <div class="code-block"><pre><code>@annotation(com.example.security.Auditable)</code></pre></div>
+                            <p class="text-sm text-stone-500 -mt-2 ml-4">Khớp với bất kỳ phương thức nào được chú thích bằng <code>@Auditable</code>.</p>
+                        </li>
+                         <li>
+                            <strong><code>bean</code>:</strong> Khớp với các phương thức của một Spring bean có tên cụ thể.
+                            <div class="code-block"><pre><code>bean(*Service)</code></pre></div>
+                            <p class="text-sm text-stone-500 -mt-2 ml-4">Khớp với tất cả các bean có tên kết thúc bằng "Service".</p>
+                        </li>
+                     </ul>
+                     <p class="mt-4">Bạn có thể kết hợp các biểu thức này bằng cách sử dụng <code>&&</code> (AND), <code>||</code> (OR), và <code>!</code> (NOT).</p>
+                `
+            }
+        }
+    },
+    'data': {
+        title: 'III. Truy cập dữ liệu',
+        subtopics: {
+            'jpa': {
+                title: 'Spring Data JPA',
+                content: `
+                    <h3>Spring Data JPA</h3>
+                    <p>Spring Data JPA đơn giản hóa đáng kể việc triển khai tầng truy cập dữ liệu dựa trên JPA. Nó cung cấp một abstraction mạnh mẽ trên các repository, giảm thiểu mã boilerplate.</p>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">1. Interfaces Repository</h4>
+                    <p>Chỉ cần định nghĩa một interface kế thừa từ <code>JpaRepository</code>, Spring Data sẽ tự động cung cấp các triển khai cho các thao tác CRUD cơ bản.</p>
+                    <div class="code-block"><pre><code>public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    // Spring Data sẽ tự động triển khai các phương thức CRUD
+}</code></pre></div>
+
+                    <h4 class="text-xl font-semibold mt-6 mb-2">2. Query Methods</h4>
+                    <p>Spring Data có thể tự động tạo các truy vấn từ tên phương thức trong interface repository. Đây là một ví dụ về "convention over configuration".</p>
+                     <div class="code-block"><pre><code>public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    // Dịch thành: SELECT u FROM User u WHERE u.emailAddress = ?1
+    User findByEmailAddress(String emailAddress);
+
+    // Dịch thành: SELECT u FROM User u WHERE u.lastname = ?1 ORDER BY u.firstname ASC
+    List&lt;User&gt; findByLastnameOrderByFirstnameAsc(String lastname);
+}</code></pre></div>
+
+                    <h4 class="text-xl font-semibold mt-6 mb-2">3. @Query Annotation</h4>
+                    <p>Đối với các truy vấn phức tạp không thể biểu diễn qua tên phương thức, bạn có thể sử dụng annotation <code>@Query</code> để viết JPQL hoặc SQL gốc.</p>
+                    <div class="code-block"><pre><code>public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    @Query("SELECT u FROM User u WHERE u.status = ?1")
+    List&lt;User&gt; findUsersByStatus(Integer status);
+
+    @Query(value = "SELECT * FROM users WHERE email_address = :email", nativeQuery = true)
+    User findUserByEmailNative(@Param("email") String email);
+}</code></pre></div>
+                `
+            },
+            'tx': {
+                title: 'Quản lý Giao dịch',
+                content: `
+                    <h3>Quản lý Giao dịch với @Transactional</h3>
+                    <p>Spring cung cấp một mô hình quản lý giao dịch khai báo mạnh mẽ thông qua annotation <code>@Transactional</code>. Điều này giúp tách biệt logic quản lý giao dịch khỏi logic nghiệp vụ.</p>
+                    <div class="code-block"><pre><code>@Service
+public class UserManagementService {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Transactional
+    public void registerUser(User user) {
+        // Tất cả các thao tác trong phương thức này
+        // sẽ được thực thi trong một giao dịch duy nhất.
+        // Giao dịch sẽ commit khi phương thức kết thúc,
+        // hoặc rollback nếu có RuntimeException.
+        userRepository.save(user);
+    }
+}</code></pre></div>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Hành vi Lan truyền (Propagation)</h4>
+                    <p>Xác định cách một phương thức <code>@Transactional</code> tương tác với một giao dịch hiện có.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>REQUIRED (Mặc định):</strong> Tham gia giao dịch hiện có; tạo một giao dịch mới nếu không có.</li>
+                        <li><strong>REQUIRES_NEW:</strong> Luôn tạo một giao dịch mới, tạm dừng giao dịch hiện tại (nếu có).</li>
+                        <li><strong>SUPPORTS:</strong> Chạy trong một giao dịch nếu có; nếu không, chạy không có giao dịch.</li>
+                        <li><strong>NOT_SUPPORTED:</strong> Luôn chạy không có giao dịch, tạm dừng giao dịch hiện tại (nếu có).</li>
+                        <li><strong>MANDATORY:</strong> Phải có một giao dịch hiện có, nếu không sẽ ném ngoại lệ.</li>
+                        <li><strong>NEVER:</strong> Không được chạy trong một giao dịch, nếu có sẽ ném ngoại lệ.</li>
+                        <li><strong>NESTED:</strong> Tạo một giao dịch lồng nhau (sử dụng savepoint của JDBC) nếu có giao dịch hiện tại; hoạt động như REQUIRED nếu không.</li>
+                    </ul>
+
+                     <h4 class="text-xl font-semibold mt-6 mb-2">Mức độ Cô lập (Isolation)</h4>
+                    <p>Xác định mức độ một giao dịch được bảo vệ khỏi sự can thiệp của các giao dịch khác.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>READ_UNCOMMITTED:</strong> Có thể đọc dữ liệu chưa được commit (dirty read).</li>
+                        <li><strong>READ_COMMITTED:</strong> Ngăn dirty read. Đây là mức mặc định của hầu hết các cơ sở dữ liệu.</li>
+                        <li><strong>REPEATABLE_READ:</strong> Ngăn dirty read và non-repeatable read.</li>
+                        <li><strong>SERIALIZABLE:</strong> Mức độ cao nhất, ngăn tất cả các vấn đề về đồng thời nhưng ảnh hưởng đến hiệu năng.</li>
+                    </ul>
+                `
+            }
+        }
+    },
+    'mvc': {
+        title: 'IV. Spring MVC',
+        subtopics: {
+            'dispatcher': {
+                title: 'DispatcherServlet',
+                content: `
+                    <h3>Kiến trúc Spring MVC: Vai trò của DispatcherServlet</h3>
+                    <p><code>DispatcherServlet</code> là cốt lõi của Spring MVC. Nó hoạt động như một "Front Controller", nhận tất cả các yêu cầu HTTP đến và điều phối chúng đến các thành phần phù hợp để xử lý.</p>
+                    <h4 class="text-xl font-semibold mt-6 mb-2">Luồng xử lý yêu cầu</h4>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li>Yêu cầu HTTP đến <code>DispatcherServlet</code>.</li>
+                        <li><code>DispatcherServlet</code> tham khảo <code>HandlerMapping</code> để tìm một controller (handler) phù hợp.</li>
+                        <li><code>DispatcherServlet</code> gọi handler thông qua một <code>HandlerAdapter</code> thích hợp.</li>
+                        <li>Handler thực thi logic, xử lý yêu cầu và trả về một đối tượng <code>ModelAndView</code> (chứa dữ liệu model và tên view logic).</li>
+                        <li><code>DispatcherServlet</code> tham khảo <code>ViewResolver</code> để ánh xạ tên view logic thành một <code>View</code> cụ thể (ví dụ: một trang JSP).</li>
+                        <li><code>DispatcherServlet</code> render view bằng cách truyền dữ liệu model vào đó.</li>
+                        <li>Phản hồi HTTP được gửi lại cho client.</li>
+                    </ol>
+                    <div class="note">
+                        <p>Kiến trúc này giúp tách biệt rõ ràng các mối quan tâm: controller xử lý logic, view xử lý hiển thị, và model mang dữ liệu. <code>DispatcherServlet</code> điều phối tất cả, làm cho ứng dụng có cấu trúc và dễ bảo trì.</p>
+                    </div>
+                `
+            },
+            'controllers': {
+                title: 'Controllers & Mapping',
+                content: `
+                    <h3>Controllers và Request Mapping</h3>
+                    <p>Controllers là các lớp chịu trách nhiệm xử lý yêu cầu của người dùng. Các annotation Request Mapping được sử dụng để liên kết các URL và phương thức HTTP với các phương thức controller cụ thể.</p>
+                    
+                    <h4 class="text-xl font-semibold mt-6 mb-2"><code>@RequestMapping</code> và các phím tắt</h4>
+                    <p><code>@RequestMapping</code> là annotation chung. Tuy nhiên, để mã nguồn rõ ràng hơn, nên sử dụng các annotation chuyên biệt cho từng phương thức HTTP:</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong><code>@GetMapping</code>:</strong> Xử lý các yêu cầu HTTP GET.</li>
+                        <li><strong><code>@PostMapping</code>:</strong> Xử lý các yêu cầu HTTP POST.</li>
+                        <li><strong><code>@PutMapping</code>:</strong> Xử lý các yêu cầu HTTP PUT.</li>
+                        <li><strong><code>@DeleteMapping</code>:</strong> Xử lý các yêu cầu HTTP DELETE.</li>
+                        <li><strong><code>@PatchMapping</code>:</strong> Xử lý các yêu cầu HTTP PATCH.</li>
+                    </ul>
+                    
+                     <div class="code-block"><pre><code>@Controller
+@RequestMapping("/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable Long id, Model model) {
+        // ... logic để lấy user
+        model.addAttribute("user", userService.findById(id));
+        return "userProfile"; // Trả về tên view
+    }
+
+    @PostMapping
+    public String createUser(User user) {
+        // ... logic để tạo user
+        return "redirect:/users"; // Chuyển hướng sau khi tạo
+    }
+}</code></pre></div>
+                `
+            }
+        }
+    },
+     'rest': {
+        title: 'V. REST APIs',
+        content: "Nội dung cho REST APIs"
+    },
+    'security': {
+        title: 'VI. Spring Security',
+        content: "Nội dung cho Spring Security"
+    },
+     'testing': {
+        title: 'VII. Testing',
+        content: "Nội dung cho Testing"
+    },
+    'boot': {
+        title: 'VIII. Spring Boot',
+        content: "Nội dung cho Spring Boot"
+    },
+    'messaging': {
+        title: 'IX. Messaging',
+        content: "Nội dung cho Messaging"
+    }
+};
+
+const beanScopesData = [
+    { 
+        name: 'singleton', 
+        icon: '📦',
+        description: '(Mặc định) Một instance duy nhất cho mỗi container IoC. Lý tưởng cho các bean không trạng thái (stateless) được chia sẻ trên toàn ứng dụng.'
+    },
+    { 
+        name: 'prototype', 
+        icon: '✨',
+        description: 'Một instance mới được tạo mỗi khi được yêu cầu. Dùng cho các bean có trạng thái (stateful). Spring không quản lý toàn bộ vòng đời của bean prototype sau khi tạo.'
+    },
+    { 
+        name: 'request', 
+        icon: '🌐',
+        description: 'Một instance mới cho mỗi yêu cầu HTTP. Chỉ hợp lệ trong ứng dụng web. Đảm bảo dữ liệu không bị chia sẻ giữa các yêu cầu.'
+    },
+    { 
+        name: 'session', 
+        icon: '👤',
+        description: 'Một instance mới cho mỗi phiên HTTP. Dùng để lưu trữ dữ liệu cụ thể của người dùng qua nhiều yêu cầu. Chỉ hợp lệ trong ứng dụng web.'
+    },
+    { 
+        name: 'application', 
+        icon: '🏢',
+        description: 'Một instance duy nhất cho vòng đời của ServletContext. Tương tự singleton nhưng trong phạm vi toàn bộ ứng dụng web. Chỉ hợp lệ trong ứng dụng web.'
+    }
+];
+
+const aopAdviceDetailsData = {
+    'around-before': { title: '@Around (trước)', text: 'Advice mạnh mẽ nhất. Thực thi trước khi join point được gọi. Có thể quyết định có tiếp tục thực thi join point hay không bằng cách gọi `proceedingJoinPoint.proceed()`.' },
+    'before': { title: '@Before', text: 'Thực thi trước khi join point được gọi. Không thể ngăn chặn việc thực thi join point (trừ khi ném ra một ngoại lệ).' },
+    'after-returning': { title: '@AfterReturning', text: 'Thực thi sau khi join point hoàn thành thành công và trả về một giá trị. Có thể truy cập giá trị trả về.' },
+    'after-throwing': { title: '@AfterThrowing', text: 'Thực thi nếu một join point ném ra một ngoại lệ. Có thể truy cập ngoại lệ được ném ra.' },
+    'after': { title: '@After (finally)', text: 'Thực thi sau khi join point kết thúc, bất kể nó trả về giá trị hay ném ra ngoại lệ. Tương tự như khối `finally`.' },
+    'around-after': { title: '@Around (sau)', text: 'Thực thi sau khi join point đã hoàn tất (sau khi `proceed()` được gọi). Có thể sửa đổi giá trị trả về.' }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const mainNav = document.getElementById('main-nav');
+    const contentContainer = document.getElementById('content-container');
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    const mainTopics = [
+        { id: 'container', title: 'I. Container & IoC' },
+        { id: 'aop', title: 'II. AOP' },
+        { id: 'data', title: 'III. Truy cập dữ liệu' },
+        { id: 'mvc', title: 'IV. Spring MVC' },
+        { id: 'rest', title: 'V. REST APIs' },
+        { id: 'security', title: 'VI. Spring Security' },
+        { id: 'testing', title: 'VII. Testing' },
+        { id: 'boot', title: 'VIII. Spring Boot' },
+        { id: 'messaging', title: 'IX. Messaging' },
+    ];
+
+    mainTopics.forEach(topic => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = topic.title;
+        link.dataset.topic = topic.id;
+        link.className = 'block main-nav-item py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:text-stone-900';
+        mainNav.appendChild(link);
+    });
+
+    const renderContent = (topicId, subtopicId = null) => {
+        const topic = contentData[topicId];
+        if (!topic) {
+            contentContainer.innerHTML = contentData['intro'].content;
+            return;
+        }
+
+        let html = ``;
+        if (topic.subtopics) {
+            const subtopicKeys = Object.keys(topic.subtopics);
+            const activeSubtopicId = subtopicId || subtopicKeys[0];
+            
+            html += `<nav class="flex border-b border-stone-300 mb-6">`;
+            subtopicKeys.forEach(key => {
+                html += `<button data-topic="${topicId}" data-subtopic="${key}" class="sub-nav-item py-3 px-4 sm:px-6 text-sm sm:text-base font-medium text-stone-500 border-b-2 border-transparent hover:border-stone-400 hover:text-stone-700 transition-colors duration-200 ${key === activeSubtopicId ? 'active' : ''}">${topic.subtopics[key].title}</button>`;
+            });
+            html += `</nav>`;
+            html += `<div class="main-content">${topic.subtopics[activeSubtopicId].content}</div>`;
+        } else {
+             html += `<div class="main-content"><h2>${topic.title}</h2>${topic.content}</div>`;
+        }
+        
+        contentContainer.innerHTML = html;
+        addCodeCopyButtons();
+        
+        // Post-render initializations
+        if(topicId === 'container' && (subtopicId === 'di' || !subtopicId)) {
+             initializeDIChart();
+        }
+        if(topicId === 'container' && (subtopicId === 'bean-scope' || !subtopicId)) {
+             initializeBeanScopes();
+        }
+        if(topicId === 'aop' && (subtopicId === 'advice-types')) {
+            initializeAOPDiagram();
+        }
+    };
+
+    mainNav.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target.matches('.main-nav-item')) {
+            const topicId = e.target.dataset.topic;
+            
+            document.querySelectorAll('.main-nav-item').forEach(item => item.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            renderContent(topicId);
+             if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+    });
+
+    contentContainer.addEventListener('click', e => {
+        if(e.target.matches('.sub-nav-item')) {
+            const topicId = e.target.dataset.topic;
+            const subtopicId = e.target.dataset.subtopic;
+            renderContent(topicId, subtopicId);
+        }
+    });
+
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
+    
+    // Initial load
+    document.querySelector('.main-nav-item').classList.add('active');
+    renderContent('container');
+});
+
+function addCodeCopyButtons() {
+    document.querySelectorAll('.code-block').forEach(block => {
+        const button = document.createElement('button');
+        button.textContent = 'Sao chép';
+        button.className = 'copy-btn';
+        block.appendChild(button);
+
+        button.addEventListener('click', () => {
+            const code = block.querySelector('pre code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Đã chép!';
+                setTimeout(() => {
+                    button.textContent = 'Sao chép';
+                }, 2000);
+            });
+        });
+    });
+}
+
+function initializeDIChart() {
+    const ctx = document.getElementById('diComparisonChart');
+    if(ctx) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Constructor Injection', 'Setter Injection', 'Field Injection'],
                 datasets: [{
-                    label: 'Khả năng mở rộng',
-                    data: [9, 6, 8],
+                    label: 'Khả năng kiểm thử',
+                    data: [10, 7, 3],
                     backgroundColor: 'rgba(59, 130, 246, 0.7)',
                     borderColor: 'rgba(59, 130, 246, 1)',
                     borderWidth: 1
                 }, {
-                    label: 'Hệ sinh thái',
-                    data: [10, 7, 6],
-                    backgroundColor: 'rgba(217, 119, 6, 0.7)',
-                    borderColor: 'rgba(217, 119, 6, 1)',
+                    label: 'Tính bất biến',
+                    data: [10, 2, 2],
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
                     borderWidth: 1
                 }, {
-                    label: 'Độ phức tạp (thấp hơn là tốt hơn)',
-                    data: [8, 3, 7],
-                    backgroundColor: 'rgba(107, 114, 128, 0.7)',
-                    borderColor: 'rgba(107, 114, 128, 1)',
+                    label: 'Độ ngắn gọn',
+                    data: [6, 4, 10],
+                     backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
                     borderWidth: 1
                 }]
-            };
-
-            const uberBenefitsData = {
-                labels: ['Hiệu quả tài nguyên', 'Năng suất phát triển', 'Tốc độ đổi mới', 'Độ tin cậy'],
-                datasets: [{
-                    label: 'Mức độ cải thiện (Minh họa)',
-                    data: [90, 80, 85, 95],
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.7)',
-                        'rgba(217, 119, 6, 0.7)',
-                        'rgba(22, 163, 74, 0.7)',
-                        'rgba(147, 51, 234, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(59, 130, 246, 1)',
-                        'rgba(217, 119, 6, 1)',
-                        'rgba(22, 163, 74, 1)',
-                        'rgba(147, 51, 234, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            const archComponentDetails = {
-                'api-server': {
-                    title: 'Kube APIServer',
-                    description: 'Là cổng giao tiếp chính của cụm Kubernetes. Mọi tương tác từ người dùng (kubectl), các thành phần khác và các hệ thống bên ngoài đều đi qua APIServer. Nó xác thực các yêu cầu, xử lý chúng và lưu trữ trạng thái của cụm vào etcd.'
-                },
-                'etcd': {
-                    title: 'etcd',
-                    description: 'Là một kho lưu trữ key-value phân tán, nhất quán và có tính sẵn sàng cao. Etcd là "nguồn sự thật duy nhất" (single source of truth) lưu trữ toàn bộ trạng thái và cấu hình của cụm Kubernetes.'
-                },
-                'scheduler': {
-                    title: 'Kube Scheduler',
-                    description: 'Theo dõi các Pod mới được tạo mà chưa được gán cho node nào. Scheduler sẽ quyết định node tốt nhất để chạy Pod đó dựa trên các yêu cầu về tài nguyên, các ràng buộc về chính sách, và các quy tắc affinity/anti-affinity.'
-                },
-                'controller-manager': {
-                    title: 'Kube Controller Manager',
-                    description: 'Chạy các tiến trình controller. Các controller này theo dõi trạng thái của cụm và thực hiện các hành động để đưa trạng thái hiện tại về trạng thái mong muốn. Ví dụ: Node controller, Replication controller.'
-                },
-                'cloud-controller-manager': {
-                    title: 'Cloud Controller Manager',
-                    description: 'Tích hợp Kubernetes với API của các nhà cung cấp đám mây cụ thể (AWS, GCP, Azure). Nó quản lý các tài nguyên đặc thù của đám mây như Load Balancers, Routes và Volumes.'
-                },
-                'kubelet': {
-                    title: 'Kubelet',
-                    description: 'Là một agent chạy trên mỗi worker node. Nó đảm bảo rằng các container được mô tả trong PodSpecs đang chạy và khỏe mạnh. Kubelet tương tác với container runtime để quản lý vòng đời của container.'
-                },
-                'kube-proxy': {
-                    title: 'Kube-proxy',
-                    description: 'Duy trì các quy tắc mạng trên các node. Nó cho phép giao tiếp mạng đến các Pod từ bên trong hoặc bên ngoài cụm và thực hiện cân bằng tải cho các Services.'
-                },
-                'container-runtime': {
-                    title: 'Container Runtime',
-                    description: 'Là phần mềm chịu trách nhiệm chạy các container. Kubernetes hỗ trợ nhiều container runtime khác nhau như containerd, CRI-O. Kubelet giao tiếp với runtime để kéo image và chạy container.'
-                }
-            };
-
-            // --- Chart Initialization ---
-            const createChart = (ctx, type, data, options) => {
-                if (ctx) {
-                    new Chart(ctx, { type, data, options });
-                }
-            };
-            
-            const commonChartOptions = {
-                responsive: true,
+            },
+            options: {
+                indexAxis: 'y',
                 maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: { display: true, text: 'Đánh giá (trên 10)' }
+                    }
+                },
                 plugins: {
-                    legend: {
-                        position: 'top',
+                    title: {
+                        display: true,
+                        text: 'So sánh các loại Dependency Injection'
                     },
                     tooltip: {
                         callbacks: {
@@ -550,186 +811,75 @@ data:
                                 if (label) {
                                     label += ': ';
                                 }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y;
+                                if (context.parsed.x !== null) {
+                                    label += context.parsed.x + '/10';
                                 }
                                 return label;
                             }
                         }
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
                 }
-            };
-
-            createChart(
-                document.getElementById('orchestratorComparisonChart')?.getContext('2d'),
-                'bar',
-                orchestratorData,
-                commonChartOptions
-            );
-
-            createChart(
-                document.getElementById('uberBenefitsChart')?.getContext('2d'),
-                'bar',
-                uberBenefitsData,
-                { ...commonChartOptions, indexAxis: 'y' }
-            );
-
-            // --- Mobile Menu ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                     mobileMenu.classList.add('hidden');
-                });
-            });
-
-            // --- YAML Tabs ---
-            const yamlTabs = document.querySelectorAll('.yaml-tab');
-            const yamlContents = document.querySelectorAll('.yaml-content');
-            yamlTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    yamlTabs.forEach(t => t.classList.remove('active', 'text-accent', 'border-accent'));
-                    tab.classList.add('active', 'text-accent', 'border-accent');
-                    const target = tab.dataset.target;
-                    yamlContents.forEach(content => {
-                        content.id === `${target}-content` ? content.classList.remove('hidden') : content.classList.add('hidden');
-                    });
-                });
-            });
-            
-             // --- Best Practices Tabs ---
-            const practicesTabs = document.querySelectorAll('.practice-tab');
-            const practicesContents = document.querySelectorAll('.practice-content');
-            practicesTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    practicesTabs.forEach(t => t.classList.remove('active', 'text-accent', 'border-accent'));
-                    tab.classList.add('active', 'text-accent', 'border-accent');
-                    const target = tab.dataset.target;
-                    practicesContents.forEach(content => {
-                        content.id === `${target}-content` ? content.classList.remove('hidden') : content.classList.add('hidden');
-                    });
-                });
-            });
-
-            // --- Architecture Modal ---
-            const archModal = document.getElementById('arch-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            const modalCloseButton = document.getElementById('modal-close-button');
-
-            document.querySelectorAll('.arch-component').forEach(component => {
-                component.addEventListener('click', () => {
-                    const componentId = component.dataset.component;
-                    const details = archComponentDetails[componentId];
-                    if (details) {
-                        modalTitle.textContent = details.title;
-                        modalBody.textContent = details.description;
-                        archModal.classList.remove('hidden');
-                        setTimeout(() => archModal.classList.remove('opacity-0'), 10);
-                        setTimeout(() => archModal.querySelector('.modal-content').classList.remove('scale-95'), 10);
-                    }
-                });
-            });
-
-            const closeModal = () => {
-                archModal.querySelector('.modal-content').classList.add('scale-95');
-                archModal.classList.add('opacity-0');
-                setTimeout(() => archModal.classList.add('hidden'), 300);
-            };
-
-            modalCloseButton.addEventListener('click', closeModal);
-            archModal.addEventListener('click', (event) => {
-                if (event.target === archModal) {
-                    closeModal();
-                }
-            });
-
-            // --- Active Nav Link on Scroll ---
-            const sections = document.querySelectorAll('main section');
-            const navLinks = document.querySelectorAll('header nav a');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => {
-                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
-                        });
-                    }
-                });
-            }, { rootMargin: '-50% 0px -50% 0px' });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            // Add custom styles for components
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .arch-component {
-                    background-color: #F3F4F6;
-                    border: 1px solid #D1D5DB;
-                    padding: 0.75rem;
-                    text-align: center;
-                    border-radius: 0.5rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: background-color 0.2s, box-shadow 0.2s;
-                }
-                .arch-component:hover {
-                    background-color: #E5E7EB;
-                    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-                }
-                .arch-pod {
-                    background-color: #DBEAFE;
-                    border: 1px solid #93C5FD;
-                    color: #1E40AF;
-                    padding: 0.5rem;
-                    text-align: center;
-                    border-radius: 0.5rem;
-                    font-weight: 500;
-                }
-                .object-card {
-                    background-color: #fff;
-                    padding: 1rem 1.5rem;
-                    border-radius: 0.5rem;
-                    text-align: center;
-                    font-weight: 600;
-                    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-                    transition: transform 0.2s, box-shadow 0.2s;
-                }
-                .object-card:hover {
-                    transform: translateY(-4px);
-                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-                }
-                .yaml-tab, .practice-tab {
-                    padding: 0.5rem 1rem;
-                    cursor: pointer;
-                    font-weight: 600;
-                    color: #6B7280;
-                    border-bottom: 2px solid transparent;
-                }
-                .yaml-tab.active, .practice-tab.active {
-                    color: #D97706;
-                    border-color: #D97706;
-                }
-                .practice-card {
-                    background-color: #F9FAFB;
-                    padding: 1.5rem;
-                    border-radius: 0.5rem;
-                    text-align: center;
-                    font-weight: 600;
-                }
-            `;
-            document.head.appendChild(style);
+            }
         });
-    </script>
+    }
+}
+
+function initializeBeanScopes() {
+    const container = document.getElementById('bean-scopes-container');
+    const detailsPanel = document.getElementById('bean-scope-details');
+    if (!container || !detailsPanel) return;
+    
+    container.innerHTML = beanScopesData.map(scope => `
+        <div data-scope-name="${scope.name}" class="scope-card bg-white p-4 rounded-lg shadow-sm cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center">
+                <span class="text-3xl mr-4">${scope.icon}</span>
+                <div>
+                    <h4 class="font-bold text-lg capitalize">${scope.name}</h4>
+                    <p class="text-sm text-stone-500">${scope.description.split('.')[0]}.</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    container.addEventListener('click', e => {
+        const card = e.target.closest('.scope-card');
+        if (card) {
+            document.querySelectorAll('.scope-card').forEach(c => c.classList.remove('ring-2', 'ring-blue-500'));
+            card.classList.add('ring-2', 'ring-blue-500');
+
+            const scopeName = card.dataset.scopeName;
+            const scopeData = beanScopesData.find(s => s.name === scopeName);
+            if (scopeData) {
+                detailsPanel.innerHTML = `
+                    <h4 class="font-bold text-xl capitalize">${scopeData.name}</h4>
+                    <p class="mt-2">${scopeData.description}</p>
+                `;
+                detailsPanel.classList.remove('hidden');
+            }
+        }
+    });
+}
+
+function initializeAOPDiagram() {
+    const diagram = document.getElementById('aop-advice-diagram');
+    const detailsPanel = document.getElementById('aop-advice-details');
+    if(!diagram || !detailsPanel) return;
+
+    diagram.querySelectorAll('.aop-advice-step').forEach(step => {
+        step.addEventListener('mouseenter', () => {
+            const adviceKey = step.dataset.advice;
+            const adviceData = aopAdviceDetailsData[adviceKey];
+            if (adviceData) {
+                detailsPanel.innerHTML = `<h5 class="font-semibold">${adviceData.title}</h5><p>${adviceData.text}</p>`;
+                step.classList.add('scale-105', 'shadow-xl', 'z-10');
+            }
+        });
+        step.addEventListener('mouseleave', () => {
+            step.classList.remove('scale-105', 'shadow-xl', 'z-10');
+            detailsPanel.innerHTML = `<p class="text-gray-500">Hover vào một bước trong sơ đồ để xem mô tả.</p>`;
+        });
+    });
+}
+</script>
 </body>
 </html>
