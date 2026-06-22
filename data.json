@@ -1,0 +1,144 @@
+[
+  {
+    "category": "Study Guide",
+    "folder": "study-guide",
+    "files": [
+      {
+        "name": "0. Tổng quan kỳ thi CKAD & Kế hoạch học tập",
+        "filename": "00-tong-quan-ky-thi-va-ke-hoach.md",
+        "path": "study-guide/00-tong-quan-ky-thi-va-ke-hoach.md"
+      },
+      {
+        "name": "1. Thiết lập môi trường luyện tập & Tăng tốc kubectl",
+        "filename": "01-thiet-lap-moi-truong.md",
+        "path": "study-guide/01-thiet-lap-moi-truong.md"
+      },
+      {
+        "name": "2. Kiến thức nền tảng Kubernetes (cho người mới hoàn toàn)",
+        "filename": "02-kien-thuc-nen-tang-k8s.md",
+        "path": "study-guide/02-kien-thuc-nen-tang-k8s.md"
+      },
+      {
+        "name": "3. Core Concepts — đồng hành với `a.core_concepts.md`",
+        "filename": "03-core-concepts.md",
+        "path": "study-guide/03-core-concepts.md"
+      },
+      {
+        "name": "4. Multi-container Pods — đồng hành với `b.multi_container_pods.md`",
+        "filename": "04-multi-container-pods.md",
+        "path": "study-guide/04-multi-container-pods.md"
+      },
+      {
+        "name": "5. Pod Design — đồng hành với `c.pod_design.md`",
+        "filename": "05-pod-design.md",
+        "path": "study-guide/05-pod-design.md"
+      },
+      {
+        "name": "6. Configuration & Security — đồng hành với `d.configuration.md`",
+        "filename": "06-configuration.md",
+        "path": "study-guide/06-configuration.md"
+      },
+      {
+        "name": "7. Observability & Maintenance — đồng hành với `e.observability.md`",
+        "filename": "07-observability.md",
+        "path": "study-guide/07-observability.md"
+      },
+      {
+        "name": "8. Services & Networking — đồng hành với `f.services.md`",
+        "filename": "08-services-networking.md",
+        "path": "study-guide/08-services-networking.md"
+      },
+      {
+        "name": "9. State Persistence — đồng hành với `g.state.md`",
+        "filename": "09-state-persistence.md",
+        "path": "study-guide/09-state-persistence.md"
+      },
+      {
+        "name": "10. Helm, CRD & Podman — đồng hành với `h.helm.md`, `i.crd.md`, `j.podman.md`",
+        "filename": "10-helm-crd-podman.md",
+        "path": "study-guide/10-helm-crd-podman.md"
+      },
+      {
+        "name": "11. Đề thi thử, Cheat Sheet & Checklist ngày thi",
+        "filename": "11-mock-exam-va-checklist.md",
+        "path": "study-guide/11-mock-exam-va-checklist.md"
+      },
+      {
+        "name": "12. Đề thi thử 2 — Mức TRUNG CẤP (bấm giờ 90 phút)",
+        "filename": "12-de-thi-thu-2-trung-cap.md",
+        "path": "study-guide/12-de-thi-thu-2-trung-cap.md"
+      },
+      {
+        "name": "13. Đề thi thử 3 — Mức NÂNG CAO (bấm giờ 90 phút)",
+        "filename": "13-de-thi-thu-3-nang-cao.md",
+        "path": "study-guide/13-de-thi-thu-3-nang-cao.md"
+      },
+      {
+        "name": "📘 Lộ trình & Tài liệu luyện thi CKAD (cho người mới bắt đầu)",
+        "filename": "README.md",
+        "path": "study-guide/README.md"
+      }
+    ]
+  },
+  {
+    "category": "Exercises",
+    "folder": "exercises",
+    "files": [
+      {
+        "name": "Core Concepts (13%)",
+        "filename": "a.core_concepts.md",
+        "path": "exercises/a.core_concepts.md"
+      },
+      {
+        "name": "Multi-container Pods (10%)",
+        "filename": "b.multi_container_pods.md",
+        "path": "exercises/b.multi_container_pods.md"
+      },
+      {
+        "name": "Pod design (20%)",
+        "filename": "c.pod_design.md",
+        "path": "exercises/c.pod_design.md"
+      },
+      {
+        "name": "Contributor Covenant Code of Conduct",
+        "filename": "CODE_OF_CONDUCT.md",
+        "path": "exercises/CODE_OF_CONDUCT.md"
+      },
+      {
+        "name": "Configuration (18%)",
+        "filename": "d.configuration.md",
+        "path": "exercises/d.configuration.md"
+      },
+      {
+        "name": "Observability (18%)",
+        "filename": "e.observability.md",
+        "path": "exercises/e.observability.md"
+      },
+      {
+        "name": "Services and Networking (13%)",
+        "filename": "f.services.md",
+        "path": "exercises/f.services.md"
+      },
+      {
+        "name": "State Persistence (8%)",
+        "filename": "g.state.md",
+        "path": "exercises/g.state.md"
+      },
+      {
+        "name": "Managing Kubernetes with Helm",
+        "filename": "h.helm.md",
+        "path": "exercises/h.helm.md"
+      },
+      {
+        "name": "Extend the Kubernetes API with CRD (CustomResourceDefinition)",
+        "filename": "i.crd.md",
+        "path": "exercises/i.crd.md"
+      },
+      {
+        "name": "Define, build and modify container images",
+        "filename": "j.podman.md",
+        "path": "exercises/j.podman.md"
+      }
+    ]
+  }
+]
