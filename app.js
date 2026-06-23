@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const sidebar = document.getElementById('sidebar');
 
-    const heroWelcomeHTML = markdownBody.innerHTML;
     let siteData = [];
 
     // Initialize Marked
@@ -150,8 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
         if (!hash || hash === '#') {
-            markdownBody.innerHTML = heroWelcomeHTML;
-            breadcrumbs.innerHTML = `<span class="breadcrumb-item active">Welcome</span>`;
+            loadContent('CKAD-Study-Guide.md', 'Trang chủ', 'Welcome');
             return;
         }
 
