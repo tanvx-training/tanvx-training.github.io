@@ -524,6 +524,197 @@ body {
     100% { transform: rotate(360deg); }
 }
 
+/* 100 Days Plan Screen */
+.plan-btn-container {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.btn-open-100-days {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-color), #818cf8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-open-100-days:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.plan-view-area {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.plan-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.plan-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--text-main), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.plan-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Grid Layout for Day Cards */
+.plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.day-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.day-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);
+    border-color: var(--primary-color);
+}
+
+.day-card.completed {
+    border-color: var(--success-color);
+    background: linear-gradient(to bottom, var(--card-bg), rgba(16, 185, 129, 0.05));
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.day-number {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.day-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.day-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background-color: transparent;
+}
+
+.day-checkbox:hover {
+    border-color: var(--primary-color);
+}
+
+.day-checkbox.checked {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.day-checkbox svg {
+    color: white;
+    width: 14px;
+    height: 14px;
+    display: none;
+}
+.day-checkbox.checked svg {
+    display: block;
+}
+
+.day-body {
+    flex: 1;
+}
+
+.day-section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.day-link-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.day-link-list li {
+    margin-bottom: 6px;
+}
+
+.day-link {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.day-link:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.day-notes {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: var(--active-bg);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-style: italic;
+    border-left: 3px solid var(--primary-color);
+}
+
 /* Responsive */
 .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; }
 
@@ -532,5 +723,6 @@ body {
     .sidebar.open { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
     .mobile-menu-btn { display: block; }
     .top-bar { padding: 0 20px; }
-    .content-area { margin: 20px; padding: 24px; }
+    .content-area, .plan-view-area { margin: 20px; padding: 24px; }
+    .plan-grid { grid-template-columns: 1fr; }
 }

@@ -1,0 +1,990 @@
+[
+  {
+    "day": 1,
+    "title": "Core Concepts - Cluster Architecture (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/00-tong-quan-ky-thi-va-ke-hoach.md",
+      "study-guide/01-thiet-lap-moi-truong.md"
+    ],
+    "exercises": [],
+    "notes": "Hiểu kiến trúc K8s, cách setup cụm lab."
+  },
+  {
+    "day": 2,
+    "title": "Core Concepts - Cluster Architecture (Thực Hành)",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 3,
+    "title": "Core Concepts - Basic APIs (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/02-kien-thuc-nen-tang-k8s.md",
+      "study-guide/03-core-concepts.md"
+    ],
+    "exercises": [],
+    "notes": "Làm quen với kubectl, namespaces, pods cơ bản."
+  },
+  {
+    "day": 4,
+    "title": "Core Concepts - Basic APIs (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/a.core_concepts.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 5,
+    "title": "Multi-Container Pods (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/04-multi-container-pods.md"
+    ],
+    "exercises": [],
+    "notes": "Sidecar, Ambassador, Adapter patterns."
+  },
+  {
+    "day": 6,
+    "title": "Multi-Container Pods (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/b.multi_container_pods.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 7,
+    "title": "Pod Design - Labels & Selectors (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [],
+    "notes": "Cách K8s dùng label để nhóm resources."
+  },
+  {
+    "day": 8,
+    "title": "Pod Design - Labels & Selectors (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 9,
+    "title": "Pod Design - Deployments (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [],
+    "notes": "Rollout, Rollback, Scaling."
+  },
+  {
+    "day": 10,
+    "title": "Pod Design - Deployments (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 11,
+    "title": "Pod Design - Jobs & CronJobs (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [],
+    "notes": "Chạy task 1 lần hoặc định kỳ."
+  },
+  {
+    "day": 12,
+    "title": "Pod Design - Jobs & CronJobs (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 13,
+    "title": "Configuration - ConfigMaps & Secrets (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [],
+    "notes": "Tách cấu hình ra khỏi code."
+  },
+  {
+    "day": 14,
+    "title": "Configuration - ConfigMaps & Secrets (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 15,
+    "title": "Configuration - SecurityContext & ServiceAccounts (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [],
+    "notes": "Quản lý quyền và bảo mật cho Pod."
+  },
+  {
+    "day": 16,
+    "title": "Configuration - SecurityContext & ServiceAccounts (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 17,
+    "title": "Configuration - Resource Quotas (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [],
+    "notes": "Giới hạn tài nguyên CPU/Memory."
+  },
+  {
+    "day": 18,
+    "title": "Configuration - Resource Quotas (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 19,
+    "title": "Observability - Liveness & Readiness (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [],
+    "notes": "Cấu hình Health checks."
+  },
+  {
+    "day": 20,
+    "title": "Observability - Liveness & Readiness (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 21,
+    "title": "Observability - Logging & Debugging (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [],
+    "notes": "Dùng kubectl logs và describe để fix lỗi."
+  },
+  {
+    "day": 22,
+    "title": "Observability - Logging & Debugging (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 23,
+    "title": "Services & Networking (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [],
+    "notes": "ClusterIP, NodePort, LoadBalancer."
+  },
+  {
+    "day": 24,
+    "title": "Services & Networking (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 25,
+    "title": "Network Policies (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [],
+    "notes": "Kiểm soát traffic giữa các Pods."
+  },
+  {
+    "day": 26,
+    "title": "Network Policies (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 27,
+    "title": "State Persistence - Volumes (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [],
+    "notes": "EmptyDir, HostPath."
+  },
+  {
+    "day": 28,
+    "title": "State Persistence - Volumes (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 29,
+    "title": "State Persistence - PV & PVC (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [],
+    "notes": "Storage bền vững cho DB."
+  },
+  {
+    "day": 30,
+    "title": "State Persistence - PV & PVC (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 31,
+    "title": "Helm Package Manager (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [],
+    "notes": "Cách install, upgrade release."
+  },
+  {
+    "day": 32,
+    "title": "Helm Package Manager (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/h.helm.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 33,
+    "title": "CRDs (Custom Resource Definitions) (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [],
+    "notes": "Mở rộng API của K8s."
+  },
+  {
+    "day": 34,
+    "title": "CRDs (Custom Resource Definitions) (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/i.crd.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 35,
+    "title": "Podman basics (Lý Thuyết)",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [],
+    "notes": "Build và run container bằng Podman thay vì Docker."
+  },
+  {
+    "day": 36,
+    "title": "Podman basics (Thực Hành)",
+    "knowledge": [],
+    "exercises": [
+      "exercises/j.podman.md"
+    ],
+    "notes": "Thực hành kỹ các bài tập liên quan. Gõ lệnh càng nhiều càng tốt."
+  },
+  {
+    "day": 37,
+    "title": "Ôn Tập: Core Concepts - Cluster Architecture",
+    "knowledge": [
+      "study-guide/00-tong-quan-ky-thi-va-ke-hoach.md",
+      "study-guide/01-thiet-lap-moi-truong.md"
+    ],
+    "exercises": [],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 38,
+    "title": "Ôn Tập: Core Concepts - Basic APIs",
+    "knowledge": [
+      "study-guide/02-kien-thuc-nen-tang-k8s.md",
+      "study-guide/03-core-concepts.md"
+    ],
+    "exercises": [
+      "exercises/a.core_concepts.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 39,
+    "title": "Ôn Tập: Multi-Container Pods",
+    "knowledge": [
+      "study-guide/04-multi-container-pods.md"
+    ],
+    "exercises": [
+      "exercises/b.multi_container_pods.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 40,
+    "title": "Ôn Tập: Pod Design - Labels & Selectors",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 41,
+    "title": "Ôn Tập: Pod Design - Deployments",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 42,
+    "title": "Ôn Tập: Pod Design - Jobs & CronJobs",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 43,
+    "title": "Ôn Tập: Configuration - ConfigMaps & Secrets",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 44,
+    "title": "Ôn Tập: Configuration - SecurityContext & ServiceAccounts",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 45,
+    "title": "Ôn Tập: Configuration - Resource Quotas",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 46,
+    "title": "Ôn Tập: Observability - Liveness & Readiness",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 47,
+    "title": "Ôn Tập: Observability - Logging & Debugging",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 48,
+    "title": "Ôn Tập: Services & Networking",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 49,
+    "title": "Ôn Tập: Network Policies",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 50,
+    "title": "Ôn Tập: State Persistence - Volumes",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 51,
+    "title": "Ôn Tập: State Persistence - PV & PVC",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 52,
+    "title": "Ôn Tập: Helm Package Manager",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [
+      "exercises/h.helm.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 53,
+    "title": "Ôn Tập: CRDs (Custom Resource Definitions)",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [
+      "exercises/i.crd.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 54,
+    "title": "Ôn Tập: Podman basics",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [
+      "exercises/j.podman.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 55,
+    "title": "Ôn Tập: Core Concepts - Cluster Architecture",
+    "knowledge": [
+      "study-guide/00-tong-quan-ky-thi-va-ke-hoach.md",
+      "study-guide/01-thiet-lap-moi-truong.md"
+    ],
+    "exercises": [],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 56,
+    "title": "Ôn Tập: Core Concepts - Basic APIs",
+    "knowledge": [
+      "study-guide/02-kien-thuc-nen-tang-k8s.md",
+      "study-guide/03-core-concepts.md"
+    ],
+    "exercises": [
+      "exercises/a.core_concepts.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 57,
+    "title": "Ôn Tập: Multi-Container Pods",
+    "knowledge": [
+      "study-guide/04-multi-container-pods.md"
+    ],
+    "exercises": [
+      "exercises/b.multi_container_pods.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 58,
+    "title": "Ôn Tập: Pod Design - Labels & Selectors",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 59,
+    "title": "Ôn Tập: Pod Design - Deployments",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 60,
+    "title": "Ôn Tập: Pod Design - Jobs & CronJobs",
+    "knowledge": [
+      "study-guide/05-pod-design.md"
+    ],
+    "exercises": [
+      "exercises/c.pod_design.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 61,
+    "title": "Ôn Tập: Configuration - ConfigMaps & Secrets",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 62,
+    "title": "Ôn Tập: Configuration - SecurityContext & ServiceAccounts",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 63,
+    "title": "Ôn Tập: Configuration - Resource Quotas",
+    "knowledge": [
+      "study-guide/06-configuration.md"
+    ],
+    "exercises": [
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 64,
+    "title": "Ôn Tập: Observability - Liveness & Readiness",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 65,
+    "title": "Ôn Tập: Observability - Logging & Debugging",
+    "knowledge": [
+      "study-guide/07-observability.md"
+    ],
+    "exercises": [
+      "exercises/e.observability.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 66,
+    "title": "Ôn Tập: Services & Networking",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 67,
+    "title": "Ôn Tập: Network Policies",
+    "knowledge": [
+      "study-guide/08-services-networking.md"
+    ],
+    "exercises": [
+      "exercises/f.services.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 68,
+    "title": "Ôn Tập: State Persistence - Volumes",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 69,
+    "title": "Ôn Tập: State Persistence - PV & PVC",
+    "knowledge": [
+      "study-guide/09-state-persistence.md"
+    ],
+    "exercises": [
+      "exercises/g.state.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 70,
+    "title": "Ôn Tập: Helm Package Manager",
+    "knowledge": [
+      "study-guide/10-helm-crd-podman.md"
+    ],
+    "exercises": [
+      "exercises/h.helm.md"
+    ],
+    "notes": "Ôn tập lại chủ đề này. Mục tiêu: Hoàn thành bài tập mà không cần nhìn Docs quá nhiều."
+  },
+  {
+    "day": 71,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 72,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 73,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 74,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 75,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  },
+  {
+    "day": 76,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 77,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 78,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 79,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 80,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  },
+  {
+    "day": 81,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 82,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 83,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 84,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 85,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  },
+  {
+    "day": 86,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 87,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 88,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 89,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 90,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  },
+  {
+    "day": 91,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 92,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 93,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 94,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 95,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  },
+  {
+    "day": 96,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 97,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 98,
+    "title": "Luyện Tập Tổng Hợp",
+    "knowledge": [],
+    "exercises": [
+      "exercises/c.pod_design.md",
+      "exercises/d.configuration.md"
+    ],
+    "notes": "Giải lại các bài tập khó (Pod Design, Configuration) bằng imperative commands."
+  },
+  {
+    "day": 99,
+    "title": "Mock Exam - Đề Thi Thử",
+    "knowledge": [
+      "study-guide/11-mock-exam-va-checklist.md",
+      "study-guide/12-de-thi-thu-2-trung-cap.md",
+      "study-guide/13-de-thi-thu-3-nang-cao.md"
+    ],
+    "exercises": [],
+    "notes": "Bật đồng hồ đếm ngược 2 tiếng. Cố gắng làm đạt > 66%."
+  },
+  {
+    "day": 100,
+    "title": "Nghỉ Ngơi / Tự Đánh Giá",
+    "knowledge": [],
+    "exercises": [],
+    "notes": "Dành ngày hôm nay để review lại những điểm yếu. Không học kiến thức mới."
+  }
+]

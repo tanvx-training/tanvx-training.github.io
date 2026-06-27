@@ -15,9 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const planProgressContainer = document.getElementById('plan-progress-container');
     const planProgressBar = document.getElementById('plan-progress-bar');
     const planInfo = document.getElementById('plan-info');
+    const btnOpen100Days = document.getElementById('btn-open-100-days');
+    const planViewArea = document.getElementById('plan-view-area');
+    const contentArea = document.getElementById('content-area');
+    const planGrid = document.getElementById('plan-grid');
 
     let siteData = [];
+    let planData = [];
     let completedFiles = JSON.parse(localStorage.getItem('ckadCompleted') || '[]');
+    let completedDays = JSON.parse(localStorage.getItem('ckadCompletedDays') || '[]');
     let currentPath = '';
 
     // Initialize Marked
@@ -28,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Theme Logic ---
     const initTheme = () => {
-        // Default to dark for developers, unless explicitly set to light
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
@@ -93,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     examTimerBtn.addEventListener('click', () => {
         if (timerInterval) {
-            // Stop Timer
             clearInterval(timerInterval);
             timerInterval = null;
             timeRemaining = 120 * 60;
@@ -101,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             timerDisplay.textContent = "120:00 (Reset)";
             setTimeout(updateTimerDisplay, 2000);
         } else {
-            // Start Timer
             timeRemaining = 120 * 60;
             updateTimerDisplay();
             timerInterval = setInterval(() => {
@@ -129,14 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
             const currentDay = Math.min(diffDays, 100);
             
-            // Calculate total files vs completed files
-            let totalFiles = 0;
-            siteData.forEach(cat => { totalFiles += cat.files.length; });
-            const completedCount = completedFiles.length;
-            const percent = totalFiles > 0 ? (completedCount / totalFiles) * 100 : 0;
-
+            const percent = completedDays.length; // Max 100 days
             planProgressBar.style.width = `${percent}%`;
-            planInfo.innerHTML = `Day <strong>${currentDay}</strong>/100 &bull; Progress: <strong>${Math.round(percent)}%</strong>`;
+            planInfo.innerHTML = `Day <strong>${currentDay}</strong>/100 &bull; Progress: <strong>${percent}%</strong>`;
         }
     };
 
@@ -145,12 +143,117 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStudyPlanWidget();
     });
 
+    btnOpen100Days.addEventListener('click', () => {
+        showPlanView();
+    });
+
+    const showPlanView = () => {
+        contentArea.style.display = 'none';
+        planViewArea.style.display = 'block';
+        breadcrumbs.innerHTML = `<span class="breadcrumb-item">100-Day Plan</span>`;
+        if (window.innerWidth <= 768) sidebar.classList.remove('open');
+        renderPlanGrid();
+    };
+
+    // Render the 100 days grid
+    const renderPlanGrid = () => {
+        planGrid.innerHTML = '';
+        
+        // Helper to format path to a friendly name if needed
+        const getFileName = (path) => {
+            const parts = path.split('/');
+            let name = parts[parts.length - 1];
+            name = name.replace('.md', '').replace(/^[\d\w]+[-_.]/, '').replace(/[-_]/g, ' ');
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        };
+
+        planData.forEach(dayInfo => {
+            const isCompleted = completedDays.includes(dayInfo.day);
+            const card = document.createElement('div');
+            card.className = `day-card ${isCompleted ? 'completed' : ''}`;
+            
+            let html = `
+                <div class="day-header">
+                    <div>
+                        <span class="day-number">Ngày ${dayInfo.day}</span>
+                        <h3 class="day-title">${dayInfo.title}</h3>
+                    </div>
+                    <div class="day-checkbox ${isCompleted ? 'checked' : ''}" data-day="${dayInfo.day}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                </div>
+                <div class="day-body">
+            `;
+
+            if (dayInfo.knowledge && dayInfo.knowledge.length > 0) {
+                html += `<div class="day-section-title">📖 Kiến Thức</div><ul class="day-link-list">`;
+                dayInfo.knowledge.forEach(path => {
+                    html += `<li><a href="#${path}" class="day-link" data-path="${path}">📄 ${getFileName(path)}</a></li>`;
+                });
+                html += `</ul>`;
+            }
+
+            if (dayInfo.exercises && dayInfo.exercises.length > 0) {
+                html += `<div class="day-section-title">💻 Thực Hành</div><ul class="day-link-list">`;
+                dayInfo.exercises.forEach(path => {
+                    html += `<li><a href="#${path}" class="day-link" data-path="${path}">📝 ${getFileName(path)}</a></li>`;
+                });
+                html += `</ul>`;
+            }
+
+            if (dayInfo.notes) {
+                html += `<div class="day-notes">${dayInfo.notes}</div>`;
+            }
+
+            html += `</div>`;
+            card.innerHTML = html;
+
+            // Add events
+            const checkbox = card.querySelector('.day-checkbox');
+            checkbox.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const day = parseInt(checkbox.dataset.day);
+                if (completedDays.includes(day)) {
+                    completedDays = completedDays.filter(d => d !== day);
+                    checkbox.classList.remove('checked');
+                    card.classList.remove('completed');
+                } else {
+                    completedDays.push(day);
+                    checkbox.classList.add('checked');
+                    card.classList.add('completed');
+                }
+                localStorage.setItem('ckadCompletedDays', JSON.stringify(completedDays));
+                updateStudyPlanWidget();
+            });
+
+            // Handle link clicks to open the specific markdown
+            card.querySelectorAll('.day-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // It's a standard anchor link that changes hash, but we also want to toggle view
+                    planViewArea.style.display = 'none';
+                    contentArea.style.display = 'block';
+                });
+            });
+
+            planGrid.appendChild(card);
+        });
+    };
+
     // --- Data Rendering ---
     const loadData = async () => {
         try {
-            const response = await fetch('data.json');
-            if (!response.ok) throw new Error('Cannot load data.json');
-            siteData = await response.json();
+            // Load both data files
+            const [respData, respPlan] = await Promise.all([
+                fetch('data.json'),
+                fetch('100-days.json')
+            ]);
+            
+            if (!respData.ok) throw new Error('Cannot load data.json');
+            if (!respPlan.ok) throw new Error('Cannot load 100-days.json');
+
+            siteData = await respData.json();
+            planData = await respPlan.json();
+
             renderSidebar(siteData);
             updateStudyPlanWidget();
             handleRouting();
@@ -189,10 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Content Loading & Enhancements ---
     const enhanceMarkdown = () => {
-        // Syntax Highlighting
         document.querySelectorAll('pre code').forEach((block) => hljs.highlightElement(block));
         
-        // Add Copy Button to Pre blocks
         document.querySelectorAll('pre').forEach(pre => {
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
@@ -211,7 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pre.appendChild(btn);
         });
 
-        // Add Completion Section
         if (currentPath && currentPath !== 'CKAD-Study-Guide.md') {
             const section = document.createElement('div');
             section.className = 'completion-section';
@@ -233,14 +333,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 localStorage.setItem('ckadCompleted', JSON.stringify(completedFiles));
                 
-                // Update sidebar icon
                 const navItem = document.querySelector(`.nav-item[data-path="${currentPath}"]`);
                 if (navItem) {
                     if (completedFiles.includes(currentPath)) navItem.classList.add('completed');
                     else navItem.classList.remove('completed');
                 }
-                
-                updateStudyPlanWidget();
             });
             
             section.appendChild(btn);
@@ -250,6 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadContent = async (path, name, category) => {
         currentPath = path;
+        
+        // Ensure standard view is shown
+        planViewArea.style.display = 'none';
+        contentArea.style.display = 'block';
+        
         markdownBody.style.display = 'none';
         loading.style.display = 'block';
         breadcrumbs.innerHTML = `<span class="breadcrumb-item">${category}</span> / <span class="breadcrumb-item active">${name}</span>`;
@@ -262,7 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
             markdownBody.innerHTML = marked.parse(mdText);
             enhanceMarkdown();
             
-            // Animation
             setTimeout(() => {
                 loading.style.display = 'none';
                 markdownBody.style.display = 'block';
@@ -289,8 +390,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const path = hash.substring(1);
-        const targetNav = document.querySelector(`.nav-item[data-path="${path}"]`);
         
+        // Special case: if routing to 100 days explicitly
+        if (path === 'plan-100-days') {
+            showPlanView();
+            return;
+        }
+
+        const targetNav = document.querySelector(`.nav-item[data-path="${path}"]`);
         if (targetNav) {
             targetNav.classList.add('active');
             targetNav.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
