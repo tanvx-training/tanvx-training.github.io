@@ -72,11 +72,6 @@
         "name": "13. Đề thi thử 3 — Mức NÂNG CAO (bấm giờ 90 phút)",
         "filename": "13-de-thi-thu-3-nang-cao.md",
         "path": "study-guide/13-de-thi-thu-3-nang-cao.md"
-      },
-      {
-        "name": "📘 Lộ trình & Tài liệu luyện thi CKAD (cho người mới bắt đầu)",
-        "filename": "README.md",
-        "path": "study-guide/README.md"
       }
     ]
   },
@@ -98,11 +93,6 @@
         "name": "Pod design (20%)",
         "filename": "c.pod_design.md",
         "path": "exercises/c.pod_design.md"
-      },
-      {
-        "name": "Contributor Covenant Code of Conduct",
-        "filename": "CODE_OF_CONDUCT.md",
-        "path": "exercises/CODE_OF_CONDUCT.md"
       },
       {
         "name": "Configuration (18%)",

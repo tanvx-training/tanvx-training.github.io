@@ -34,16 +34,21 @@ function scanDirectory(categoryName, folderName) {
   const items = fs.readdirSync(dirPath);
   const files = [];
 
-  for (const item of items) {
-    if (item.endsWith('.md')) {
-      const filePath = path.join(dirPath, item);
-      files.push({
-        name: getTitleFromMarkdown(filePath, item),
-        filename: item,
-        path: `${folderName}/${item}`
-      });
+    for (const item of items) {
+      if (item.endsWith('.md')) {
+        // Skip common meta files
+        if (item.toLowerCase() === 'readme.md' || item.toLowerCase() === 'code_of_conduct.md') {
+          continue;
+        }
+        
+        const filePath = path.join(dirPath, item);
+        files.push({
+          name: getTitleFromMarkdown(filePath, item),
+          filename: item,
+          path: `${folderName}/${item}`
+        });
+      }
     }
-  }
 
   // Sort files logically (by prefix numbers/letters)
   files.sort((a, b) => a.filename.localeCompare(b.filename));
