@@ -339,10 +339,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     else navItem.classList.remove('completed');
                 }
             });
-            
             section.appendChild(btn);
             markdownBody.appendChild(section);
         }
+
+        // Fix Markdown Links
+        document.querySelectorAll('#markdown-body a').forEach(a => {
+            const href = a.getAttribute('href');
+            if (href && !href.startsWith('http') && !href.startsWith('#')) {
+                if (href.includes('.md')) {
+                    let currentDir = currentPath.split('/');
+                    currentDir.pop();
+                    
+                    // Separate file path and section hash (if any)
+                    const [pathPart, hashPart] = href.split('#');
+                    
+                    if (pathPart) {
+                        let targetParts = pathPart.split('/');
+                        for (let part of targetParts) {
+                            if (part === '.') continue;
+                            else if (part === '..') currentDir.pop();
+                            else currentDir.push(part);
+                        }
+                    }
+                    
+                    let finalPath = currentDir.join('/');
+                    a.setAttribute('href', `#${finalPath}`);
+                }
+            } else if (href && href.startsWith('http')) {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
     };
 
     const loadContent = async (path, name, category) => {
